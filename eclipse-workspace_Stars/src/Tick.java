@@ -17,35 +17,10 @@ public class Tick {
 		{
 			count++;
 			if (fireCooldown > 0)
-				//fireCooldown = 0;
 				fireCooldown--;
-//			if(shieldCooldown<600)
-//				shieldCooldown++;
-//			if(multiCooldown<1200)
-//				multiCooldown++;
-//			if(boostCooldown<1200)
-//				boostCooldown++;
-//			if(megaCooldown<3200)
-//				megaCooldown++;
 	
+
 			
-			
-	
-			for (int i = 0; i < 600; i++) {
-				m.world.particles[i][2] -= m.world.particles[i][4];
-				if (m.world.particles[i][2] < -100) {
-	
-					if (i <= 400) {
-						m.world.particles[i][2] = m.world.rand.nextInt(500) + frame.WIDTH;
-						m.world.particles[i][3] = m.world.rand.nextInt(frame.HEIGHT);
-						m.world.particles[i][4] = m.world.rand.nextInt(10)+1;
-					} else {
-						m.world.particles[i][2] = m.world.rand.nextInt(1000) + frame.WIDTH;
-						m.world.particles[i][3] = m.world.rand.nextInt(frame.HEIGHT);
-						m.world.particles[i][4] = m.world.rand.nextInt(10) + 11;
-					}
-				}
-			}
 			if(count == 155 && healthShow == false)
 				healthShow = true;
 			//if(count % 1 == 0 && m.ship.alive)
@@ -93,6 +68,7 @@ public class Tick {
 			}
 			
 			
+			m.world.updateBackground();
 			m.ship.updateMissiles();
 			m.world.updateMeteors();
 			m.world.col.Check();

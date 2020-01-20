@@ -22,7 +22,6 @@ public class Ship {
 	public BufferedImage image;
 	public Rectangle hitbox = new Rectangle (64, 64);
 	private ArrayList<Missile> missiles;
-	public Sound missileSound = new Sound("res\\pew2.wav");
 
 	
 	public Main m;
@@ -68,7 +67,6 @@ public class Ship {
 	}
 	
 	public void fire() {
-		this.missileSound.play();
 		missiles.add(new Missile(hitbox.x, hitbox.y,50,5));
 		
 		if(multi.isActive()) {

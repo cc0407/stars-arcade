@@ -35,5 +35,10 @@ public class Sound {
 			clipTime = clip.getMicrosecondPosition();
 			clip.stop();
 	}
+	
+	public void stop() {
+		clipTime = 0;
+		clip.stop();
+}
 
 }

@@ -50,14 +50,7 @@ public class Keybinds extends JComponent implements KeyListener {
 			
 			
 			if (key == KeyEvent.VK_1) {
-				
 				m.ship.shield.start();
-//				if(m.t.shieldCooldown > 599 && !m.ship.shield)
-//				{
-//				 m.ship.shield = true;
-//				 Sounds.playSound("res\\Shield.wav");
-//				}
-
 			}
 			
 			if (key == KeyEvent.VK_2) {
@@ -65,13 +58,13 @@ public class Keybinds extends JComponent implements KeyListener {
 			}
 			
 			if (key == KeyEvent.VK_3) {
-				m.ship.boost.start();
+				if(m.ship.boost.start()){
+					m.ship.speed = 15;
+				}
 			}
 			
 			if (key == KeyEvent.VK_4) {
-				if(m.ship.mega.start()) {
-					m.ship.speed = 15;
-				}
+				m.ship.mega.start();
 			}
 			
 			if (key == KeyEvent.VK_ESCAPE) {

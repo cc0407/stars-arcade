@@ -118,7 +118,7 @@ public class Renderer extends JPanel {
 	
 				//Panel
 				g.setColor(new Color(180,180,180,255));
-				g.fillRect(0,990,m.f.WIDTH, 90);
+				g.fillRect(0, m.f.HEIGHT * 95/100 ,m.f.WIDTH, m.f.HEIGHT * 5/100);
 				
 				//vert Line 1
 				g.setColor(Color.DARK_GRAY);

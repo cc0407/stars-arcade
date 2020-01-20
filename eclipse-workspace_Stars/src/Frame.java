@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 public class Frame {
 	public int HEIGHT;
 	public int WIDTH;
+	public final int LOWERTENTH;
 	public Renderer jp;
 	public Clip pew;
 	public JFrame jf = new JFrame("Space");
@@ -23,12 +24,15 @@ public class Frame {
 	public Frame(Main m, Dimension screen) {
 		WIDTH = (int) screen.getWidth();
 		HEIGHT = (int) screen.getHeight();
+		LOWERTENTH = HEIGHT * 9/10;
 		this.m = m;
 		this.keybinds = new Keybinds(m);
 		jp = new Renderer(m);
 
 		
 		jf.setSize(WIDTH, HEIGHT);
+		jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		jf.setUndecorated(true);
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

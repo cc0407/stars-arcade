@@ -67,6 +67,7 @@ public class Skill {
 	public boolean start() {
 		if(currentCooldown <= 0) {
 			this.isActive = true;
+			this.play();
 			return true;
 		}
 		return false;
@@ -84,6 +85,7 @@ public class Skill {
 			ticksLeft = duration;
 			currentCooldown = cooldown;
 			isActive = false;
+			this.s.stop();
 			return 0;
 		}
 		this.ticksLeft --;

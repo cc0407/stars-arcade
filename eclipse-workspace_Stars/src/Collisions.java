@@ -22,6 +22,7 @@ public class Collisions {
 				{
 					try
 					{
+						ms.get(i).stopSound();
 						ms.remove(i);
 					}
 					catch(IndexOutOfBoundsException g)

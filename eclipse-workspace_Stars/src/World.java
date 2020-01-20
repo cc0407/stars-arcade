@@ -89,5 +89,23 @@ public class World {
 	public ArrayList<Meteor> getMeteors() {
 		return meteors;
 	}
+	
+	public void updateBackground() {
+		for (int i = 0; i < 600; i++) {
+			particles[i][2] -= particles[i][4];
+			if (particles[i][2] < -100) {
+
+				if (i <= 400) {
+					particles[i][2] = rand.nextInt(500) + frame.WIDTH;
+					particles[i][3] = rand.nextInt(frame.HEIGHT);
+					particles[i][4] = rand.nextInt(10)+1;
+				} else {
+					particles[i][2] = rand.nextInt(1000) + frame.WIDTH;
+					particles[i][3] = rand.nextInt(frame.HEIGHT);
+					particles[i][4] = rand.nextInt(10) + 11;
+				}
+			}
+		}
+	}
 
 }
