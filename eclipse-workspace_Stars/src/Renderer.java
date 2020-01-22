@@ -20,7 +20,7 @@ public class Renderer extends JPanel {
 	public boolean progressFlash = false;
 	public int progress, shipX, shipY;
 	private FontMetrics fontMetrics;
-	private BufferedImage shieldImg, multiImg, boostImg, meteorImg;
+	private BufferedImage shieldImg, multiImg, boostImg, meteorImg, toolbarImg;
 	//private int[] xComp = {m.ship.hitbox.x + 100,m.ship.hitbox.x -27, m.ship.hitbox.x + 50, m.ship.hitbox.x, m.ship.hitbox.x + 50,  m.ship.hitbox.x - 27,  m.ship.hitbox.x +100,  m.ship.hitbox.x + 100},
 	//		yComp = {m.ship.hitbox.y +280,  m.ship.hitbox.y - 27,  m.ship.hitbox.y - 13,  m.ship.hitbox.y,  m.ship.hitbox.y + 13,  m.ship.hitbox.y + 27,  m.ship.hitbox.y - 220,  m.ship.hitbox.y + 280};
 	
@@ -30,6 +30,7 @@ public class Renderer extends JPanel {
 		try {
 			shieldImg = ImageIO.read(new File("res\\Shield.png"));
 			meteorImg = ImageIO.read(new File("res\\Asteroid.png"));
+			toolbarImg = ImageIO.read(new File("res\\toolbar.png"));
 			//boostImg = ImageIO.read(new File("res\\boost.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -116,13 +117,9 @@ public class Renderer extends JPanel {
 			if(m.t.healthShow == true)
 			{
 	
-				//Panel
-				g.setColor(new Color(180,180,180,255));
-				g.fillRect(0, m.f.HEIGHT * 95/100 ,m.f.WIDTH, m.f.HEIGHT * 5/100);
-				
-				//vert Line 1
-				g.setColor(Color.DARK_GRAY);
-				g.fillRect(420,993,10, 58);
+				//Panel			
+				g.drawImage(toolbarImg, 0, percentY(95) , m.f.WIDTH, percentY(5) , this);
+
 				
 		
 				//Health Bar
@@ -132,44 +129,40 @@ public class Renderer extends JPanel {
 					g.setColor(new 	Color(255,255,0, 255));
 				else
 					g.setColor(new 	Color(255, 0,0, 255));
-				g.fillRect(10, 997, m.ship.health*4, 50);
-				
-				//Health Bar Outline
-				g.setColor(new Color(255,255,255,255));		
-				g.drawRect(10, 997, 399, 49);		
-				
+				g.fillRect(percentX(0.25), percentY(96), m.ship.health*percentX(0.25), percentY(3.5));
+				g.setColor(Color.BLACK);		
+				g.drawRect(percentX(0.25), percentY(96), m.ship.health*percentX(0.25), percentY(3.5));
+
 				//Score
 				g.setFont(new Font("Monospaced", Font.BOLD, 30));
+				g.setColor(Color.BLACK);
 				fontMetrics = g.getFontMetrics();
-				g.drawString(m.world.getScore() + "", 550 - fontMetrics.stringWidth(m.world.getScore() + ""), 1030);
-				
-				//vert Line 2
-				g.setColor(Color.DARK_GRAY);
-				g.fillRect(560,993,10, 58);
-				
+				g.drawString(m.world.getScore() + "", percentX(30) - fontMetrics.stringWidth(m.world.getScore() + ""), percentY(98.5));
+
+				//TODO, P1 DONE DO THE REST
 				////////////
 				//pUP1
 				g.setColor(new Color(255,255,255,255));
-				g.fillRect(652,997,50, 50);
-				g.drawImage(shieldImg, 652, 997, 50, 50, this);
-				
+				g.fillRect(percentX(38), percentY(95.5),percentY(4.25), percentY(4.25));
+				g.drawImage(shieldImg, percentX(38), percentY(95.5), percentY(4.25), percentY(4.25), this);
 				//pUP1ACTIVE
 				if(m.ship.shield.isActive())
 				{
 					g.setColor(new Color(0,0,255,150));
-					g.fillRect(652, 1047 - (m.ship.shield.ticksRemaining() * 5 / 30), 50, 50 - ((300 - m.ship.shield.ticksRemaining()) * 5 / 30));
+					g.fillRect(percentX(38), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.shield.percentRemaining()));
 				}
 				else if(m.ship.shield.isOnCooldown()) {
 					g.setColor(new Color(0,0,0,150));
-					g.fillRect(652,997,50, 50);
+					g.fillRect(percentX(38), percentY(95.5),percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
 					//g.drawOval(700, 1007, 30, 30);
-					g.fillArc(662, 1007, 30, 30, 90, m.ship.shield.getCurrentCooldown()*6/10);					
+					g.fillArc(percentX(38) + percentY(0.5), percentY(95.5) + percentY(0.5), 30, 30, 90, m.ship.shield.getCurrentCooldown()*6/10);					
 				}
 				////////////
 				//pUP2
 				g.setColor(new Color(255,255,255,255));
-				g.fillRect(794,997,50, 50);
+				g.setColor(Color.BLACK);
+				g.fillRect(percentX(45),percentY(95.5), 45, 45);
 				
 				//pUP2ACTIVE
 				if(m.ship.multi.isActive())
@@ -187,7 +180,8 @@ public class Renderer extends JPanel {
 				////////////
 				//pUP3
 				g.setColor(new Color(255,255,255,255));
-				g.fillRect(936,997,50, 50);
+				g.setColor(Color.BLACK);
+				g.fillRect(percentX(52),percentY(95.5), 45, 45);
 				
 				//pUP3ACTIVE
 				if(m.ship.boost.isActive())
@@ -204,8 +198,8 @@ public class Renderer extends JPanel {
 				
 				////////////
 				//pUP4
-				g.setColor(new Color(255,255,255,255));
-				g.fillRect(1078,997,50, 50);
+				g.setColor(Color.BLACK);
+				g.fillRect(percentX(59),percentY(95.5), 45, 45);
 				
 				//pUP4ACTIVE
 				if(m.ship.mega.isActive()){
@@ -219,31 +213,29 @@ public class Renderer extends JPanel {
 				}
 				////////////
 				//vert Line 3
-				g.setColor(new Color(80,80,80,255));
-				g.fillRect(1230,993,10, 58);
 				
 				
 				//Progress Bar
 				g.setColor(Color.DARK_GRAY);
 				//horizontal
-				g.fillRect(1330, 1021, 500, 3);
+				g.fillRect(percentX(72), percentY(97.5), percentX(25), percentY(.25));
 				//verticals
-				g.fillRect(1327, 1011, 3, 23);
-				g.fillRect(1830, 1011, 3, 23);
+				g.fillRect(percentX(72), percentY(97), percentY(.25), percentY(1.25));
+				g.fillRect(percentX(97), percentY(97), percentY(.25), percentY(1.25));
 				
 				
 				//miniShip
 				progress = m.world.getScore() * 5/100;
 				if(progress > 500)
 					progress = 500;
-				g.drawImage(m.ship.image, 1327 + progress,1011 ,23,23,this);
+				g.drawImage(m.ship.image, percentX(72),percentY(96.5),23,23,this);
 				
-				if(progress == 500 && progressFlash)
-				{
+//				if(progress == 500 && progressFlash)
+//				{
 					g.setFont(new Font("Monospaced", Font.BOLD, 30));
 					g.setColor(Color.RED.darker());
-					g.drawString("!", 1867, 1030);
-				}
+					g.drawString("!", percentX(98), percentY(98.25));
+//				}
 				
 			}
 			/////////////////////////////////////////////////////
@@ -276,5 +268,23 @@ public class Renderer extends JPanel {
 				g.drawString("PAUSED", (m.f.WIDTH - fontMetrics.stringWidth("PAUSED"))/2, (m.f.HEIGHT - 60)/2);
 			}
 		}
+	}
+	
+	public int percentX(int percent) {
+		return m.f.WIDTH * percent / 100;
+	}
+	
+	public int percentY(int percent) {
+		return m.f.HEIGHT * percent / 100;
+	}
+	
+	public int percentX(double percent) {
+		double result = m.f.WIDTH * percent / 100.0;
+		return (int) result;
+	}
+	
+	public int percentY(double percent) {
+		double result = m.f.HEIGHT * percent / 100.0;
+		return (int) result;
 	}
 }

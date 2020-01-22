@@ -47,6 +47,7 @@ public class Frame {
 
      
 		jf.add(jp);
+		jf.requestFocus();
 	}
 	
 	public void init() {

@@ -37,8 +37,13 @@ public class Sound {
 	}
 	
 	public void stop() {
+		try {
 		clipTime = 0;
 		clip.stop();
+		}
+		catch(NullPointerException e) {
+			e.printStackTrace();
+		}
 }
 
 }

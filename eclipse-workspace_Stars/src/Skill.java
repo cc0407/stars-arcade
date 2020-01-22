@@ -98,4 +98,9 @@ public class Skill {
 		}
 	}
 	
+	public double percentRemaining() {
+		double result = (ticksLeft + 0.0) / (duration + 0.0);
+		return result;
+	}
+	
 }
