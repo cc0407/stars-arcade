@@ -20,15 +20,22 @@ public class Renderer extends JPanel {
 	public boolean progressFlash = false;
 	public int progress, shipX, shipY;
 	private FontMetrics fontMetrics;
-	private BufferedImage shieldImg, multiImg, boostImg, meteorImg, toolbarImg;
+	private BufferedImage shieldImg;
+	private BufferedImage multiImg;
+	private BufferedImage boostImg;
+	private BufferedImage meteorImg;
+	private BufferedImage toolbarImg;
 	//private int[] xComp = {m.ship.hitbox.x + 100,m.ship.hitbox.x -27, m.ship.hitbox.x + 50, m.ship.hitbox.x, m.ship.hitbox.x + 50,  m.ship.hitbox.x - 27,  m.ship.hitbox.x +100,  m.ship.hitbox.x + 100},
 	//		yComp = {m.ship.hitbox.y +280,  m.ship.hitbox.y - 27,  m.ship.hitbox.y - 13,  m.ship.hitbox.y,  m.ship.hitbox.y + 13,  m.ship.hitbox.y + 27,  m.ship.hitbox.y - 220,  m.ship.hitbox.y + 280};
+	
 	
 	
 	public Renderer(Main m) {
 		this.m = m;
 		try {
 			shieldImg = ImageIO.read(new File("res\\Shield.png"));
+			multiImg = ImageIO.read(new File("res\\multi.png"));
+			boostImg = ImageIO.read(new File("res\\boost.png"));
 			meteorImg = ImageIO.read(new File("res\\Asteroid.png"));
 			toolbarImg = ImageIO.read(new File("res\\toolbar.png"));
 			//boostImg = ImageIO.read(new File("res\\boost.png"));
@@ -156,60 +163,60 @@ public class Renderer extends JPanel {
 					g.fillRect(percentX(38), percentY(95.5),percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
 					//g.drawOval(700, 1007, 30, 30);
-					g.fillArc(percentX(38) + percentY(0.5), percentY(95.5) + percentY(0.5), 30, 30, 90, m.ship.shield.getCurrentCooldown()*6/10);					
+					g.fillArc(percentX(38) + percentY(0.5), percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.shield.getCurrentCooldown()*6/10);					
 				}
 				////////////
 				//pUP2
 				g.setColor(new Color(255,255,255,255));
-				g.setColor(Color.BLACK);
-				g.fillRect(percentX(45),percentY(95.5), 45, 45);
+				g.setColor(Color.GRAY);
+				g.drawImage(multiImg, percentX(45),percentY(95.5), percentY(4.25), percentY(4.25), this);
 				
 				//pUP2ACTIVE
 				if(m.ship.multi.isActive())
 				{
 					g.setColor(new Color(0,0,255,150));
-					g.fillRect(794, 1047 - (m.ship.multi.ticksRemaining() * 5 / 60), 50, 25 - ((300 - m.ship.multi.ticksRemaining()) * 5 / 60));
+					g.fillRect(percentX(45), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.multi.percentRemaining()));
 				}else if(m.ship.multi.isOnCooldown()) {
 					g.setColor(new Color(0,0,0,150));
-					g.fillRect(794,997,50, 50);
+					g.fillRect(percentX(45), percentY(95.5),percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
-					g.fillArc(804, 1007, 30, 30, 90, m.ship.multi.getCurrentCooldown()*3/10);
+					g.fillArc(percentX(45) + percentY(0.5), percentY(96),percentY(3.25), percentY(3.25), 90, m.ship.multi.getCurrentCooldown()*3/10);
 					
 					
 				}
 				////////////
 				//pUP3
 				g.setColor(new Color(255,255,255,255));
-				g.setColor(Color.BLACK);
-				g.fillRect(percentX(52),percentY(95.5), 45, 45);
+				g.setColor(Color.GRAY);
+				g.drawImage(boostImg, percentX(52),percentY(95.5), percentY(4.25), percentY(4.25), this);
 				
 				//pUP3ACTIVE
 				if(m.ship.boost.isActive())
 				{
 					g.setColor(new Color(0,0,255,150));
-					g.fillRect(936, 1047 - (m.ship.boost.ticksRemaining() * 5 / 60), 50, 25 - ((300 - m.ship.boost.ticksRemaining()) * 5 / 60));
+					g.fillRect(percentX(52), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.boost.percentRemaining()));
 				} else if(m.ship.boost.isOnCooldown()) {
 					g.setColor(new Color(0,0,0,150));
-					g.fillRect(936,997,50, 50);
+					g.fillRect(percentX(52),percentY(95.5), percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
-					g.fillArc(946, 1007, 30, 30, 90, m.ship.boost.getCurrentCooldown()*3/10);
+					g.fillArc(percentX(52) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.boost.getCurrentCooldown()*3/10);
 				}
 				
 				
 				////////////
 				//pUP4
-				g.setColor(Color.BLACK);
-				g.fillRect(percentX(59),percentY(95.5), 45, 45);
+				g.setColor(Color.GRAY);
+				g.fillRect(percentX(59),percentY(95.5), percentY(4.25), percentY(4.25));
 				
 				//pUP4ACTIVE
 				if(m.ship.mega.isActive()){
 					g.setColor(new Color(0,0,255,150));
-					g.fillRect(1078, 1047 - (m.ship.mega.ticksRemaining() * 5 / 30), 50, 50 - ((300 - m.ship.mega.ticksRemaining()) * 5 / 30));
+					g.fillRect(percentX(59), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.boost.percentRemaining()));
 				} else if(m.ship.mega.isOnCooldown()) {
 					g.setColor(new Color(0,0,0,150));
-					g.fillRect(1078,997,50, 50);
+					g.fillRect(percentX(59),percentY(95.5), percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
-					g.fillArc(1088, 1007, 30, 30, 90, m.ship.mega.getCurrentCooldown()*9/80);
+					g.fillArc(percentX(59) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.mega.getCurrentCooldown()*3/10);
 				}
 				////////////
 				//vert Line 3

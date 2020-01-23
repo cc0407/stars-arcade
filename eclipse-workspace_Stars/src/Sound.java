@@ -27,13 +27,24 @@ public class Sound {
 	}
 	
 	public void play(){
+		try {
 			clip.setMicrosecondPosition(clipTime);
 			clip.start();
+		}
+		catch(NullPointerException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void pause() {
+		try {
 			clipTime = clip.getMicrosecondPosition();
 			clip.stop();
+		}
+		catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void stop() {
