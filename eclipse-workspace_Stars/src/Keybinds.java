@@ -18,10 +18,9 @@ public class Keybinds extends JComponent implements KeyListener {
 	
 	public void keyPressed(KeyEvent e) {
 
-		
+		int key = e.getKeyCode();
 		if(!freeze) 
 		{
-			int key = e.getKeyCode();
 	
 			if (key == KeyEvent.VK_A) {
 				m.ship.dx = -m.ship.speed;
@@ -66,7 +65,7 @@ public class Keybinds extends JComponent implements KeyListener {
 			if (key == KeyEvent.VK_4) {
 				m.ship.mega.start();
 			}
-			
+		}
 			if (key == KeyEvent.VK_ESCAPE) {
 
 //					TODO fix sounds to mute all on pause
@@ -77,15 +76,13 @@ public class Keybinds extends JComponent implements KeyListener {
 				
 			}
 			
-		}
+		
 	}
 
 	public void keyReleased(KeyEvent e) {
-		
+		int key = e.getKeyCode();
 		if(!freeze) 
 		{
-			int key = e.getKeyCode();
-	
 			if (key == KeyEvent.VK_A) {
 				m.ship.dx = 0;
 			}
@@ -115,9 +112,9 @@ public class Keybinds extends JComponent implements KeyListener {
 			
 			if (key == KeyEvent.VK_3) {
 			}
-			
-			if (key == KeyEvent.VK_ESCAPE) {
-			}
+		}
+		if (key == KeyEvent.VK_ESCAPE) {
+			m.ship.stopPressingKeys();
 		}
 	}
 

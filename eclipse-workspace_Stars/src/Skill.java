@@ -9,14 +9,16 @@ public class Skill {
 	private final int duration;
 	private final int cooldown;
 	protected int currentCooldown = 0;
+	protected int startingCooldown;
 	protected int ticksLeft = 0;
 	private Sound s;
 	
-	public Skill(int duration, int cooldown, int currentCooldown, String filename) {
+	public Skill(int duration, int cooldown, int startingCooldown, String filename) {
 		this.duration = duration;
 		this.ticksLeft = duration;
 		this.cooldown = cooldown;
-		this.currentCooldown = currentCooldown;
+		this.startingCooldown = startingCooldown;
+		this.currentCooldown = startingCooldown;
 		s = new Sound(filename);
 	}
 	
@@ -25,7 +27,7 @@ public class Skill {
 	}
 	
 	public Skill(Skill other) {
-		this(other.getDuration(), other.getCooldown(), other.getPath());
+		this(other.getDuration(), other.getCooldown(), other.getStartingCooldown(), other.getPath());
 	}
 	
 	public void play() {
@@ -43,6 +45,10 @@ public class Skill {
 	
 	public int getCurrentCooldown() {
 		return this.currentCooldown;
+	}
+	
+	public int getStartingCooldown() {
+		return this.startingCooldown;
 	}
 	
 	public String getPath() {
@@ -101,6 +107,16 @@ public class Skill {
 	public double percentRemaining() {
 		double result = (ticksLeft + 0.0) / (duration + 0.0);
 		return result;
+	}
+	//returns cooldown as int between 0 and 360, for use by cooldown circles
+	public int getArcCooldown() {
+		int arcCD = (int) (360.0 * (this.currentCooldown + 0.0) / (this.cooldown + 0.0));
+		return arcCD;
+	}
+	public void reset() {
+		this.ticksLeft = duration;
+		this.currentCooldown = startingCooldown;
+		this.isActive = false;
 	}
 	
 }

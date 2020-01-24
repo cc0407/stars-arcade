@@ -58,22 +58,28 @@ public class Frame {
 		jf.setVisible(true);
 		paused = false;
 	}
-	//TODO UNPAUSING DOESNT WORK
 	public boolean togglePause() {
 		this.keybinds.freeze = !this.keybinds.freeze;
-		paused = !paused;
-		if(paused)
+		this.paused = !this.paused;
+		jp.repaint();
+		if(paused) {
+			Sound.pauseAll();
 			return true;
-		else
+		}
+		else {
+			Sound.resumeAll();
 			return false;
+		}
 	}
-	public void pause() {
-		this.keybinds.freeze = true;
-		paused = true;
-	}
-	public void unpause() {
-		this.keybinds.freeze = false;
-		paused = false;
-	}
+	
+	
+//	public void pause() {
+//		this.keybinds.freeze = true;
+//		paused = true;
+//	}
+//	public void unpause() {
+//		this.keybinds.freeze = false;
+//		paused = false;
+//	}
 
 }

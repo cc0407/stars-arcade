@@ -29,6 +29,7 @@ public class Main {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		f = new Frame(this, screenSize);
 		f.init();
+		this.ship = new Ship(this);
 		t = new Tick(this);
 		run();
 	}

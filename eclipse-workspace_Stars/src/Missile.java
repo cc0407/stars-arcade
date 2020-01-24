@@ -1,4 +1,3 @@
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -11,8 +10,10 @@ public class Missile {
 	//w=50, h =5
 	public Missile(int x, int y, int width, int height) {
 		hitbox = new Rectangle(width , height);
-		hitbox.x = x + 50;
-		hitbox.y = y + 30;
+		hitbox.x = x;
+		hitbox.y = y;
+//		hitbox.x = x + 50;
+//		hitbox.y = y + 30;
 		startSound();   
 	}
 

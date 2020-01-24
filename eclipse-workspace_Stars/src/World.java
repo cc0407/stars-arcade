@@ -4,6 +4,7 @@ import java.util.Random;
 public class World {
 	private ArrayList<Meteor> meteors = new ArrayList<Meteor>();
 	public Random rand = new Random();
+	public final int firstBossScore = 5000;
 	private int x;
 	private int y;
 	public int spawnAmt = 2;
@@ -25,7 +26,6 @@ public class World {
 	public World(Main m) {
 		this.m = m;
 		this.frame = m.f;
-		m.ship = new Ship(m);
 		this.col = new Collisions(m);
 		
 		for (int i = 0; i < 600; i++) {
@@ -52,7 +52,13 @@ public class World {
 		return this.score;
 	}
 	
-	
+	public void reset(){
+		Sound.clearAll();
+		this.clearMeteors();
+		this.setScore(0);
+		this.spawnAmt = 2;
+		
+	}
 	
 	public void spawnMeteor() {
 		for(int i = 0; i < spawnAmt; i ++)

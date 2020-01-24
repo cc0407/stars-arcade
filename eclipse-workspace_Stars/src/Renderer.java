@@ -18,7 +18,9 @@ public class Renderer extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private boolean showBoxes = false;
 	public boolean progressFlash = false;
-	public int progress, shipX, shipY;
+	public double progress;
+	public int shipX;
+	public int shipY;
 	private FontMetrics fontMetrics;
 	private BufferedImage shieldImg;
 	private BufferedImage multiImg;
@@ -62,7 +64,7 @@ public class Renderer extends JPanel {
 			//ship
 			if(m.ship.alive)
 			{
-				g.drawImage(m.ship.image, m.ship.hitbox.x, m.ship.hitbox.y, this);
+				g.drawImage(m.ship.image, m.ship.hitbox.x, m.ship.hitbox.y, m.ship.hitbox.width, m.ship.hitbox.height, this);
 	
 			
 				if(showBoxes){
@@ -136,17 +138,16 @@ public class Renderer extends JPanel {
 					g.setColor(new 	Color(255,255,0, 255));
 				else
 					g.setColor(new 	Color(255, 0,0, 255));
-				g.fillRect(percentX(0.25), percentY(96), m.ship.health*percentX(0.25), percentY(3.5));
+				g.fillRect(percentX(0.25), percentY(96), (int) (percentX(22) * m.ship.healthAsPercent()), percentY(3.5));
 				g.setColor(Color.BLACK);		
-				g.drawRect(percentX(0.25), percentY(96), m.ship.health*percentX(0.25), percentY(3.5));
+				g.drawRect(percentX(0.25), percentY(96), (int) (percentX(22) * m.ship.healthAsPercent()) , percentY(3.5));
 
 				//Score
-				g.setFont(new Font("Monospaced", Font.BOLD, 30));
+				g.setFont(new Font("Monospaced", Font.BOLD, percentY(2.5)));
 				g.setColor(Color.BLACK);
 				fontMetrics = g.getFontMetrics();
 				g.drawString(m.world.getScore() + "", percentX(30) - fontMetrics.stringWidth(m.world.getScore() + ""), percentY(98.5));
 
-				//TODO, P1 DONE DO THE REST
 				////////////
 				//pUP1
 				g.setColor(new Color(255,255,255,255));
@@ -163,7 +164,7 @@ public class Renderer extends JPanel {
 					g.fillRect(percentX(38), percentY(95.5),percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
 					//g.drawOval(700, 1007, 30, 30);
-					g.fillArc(percentX(38) + percentY(0.5), percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.shield.getCurrentCooldown()*6/10);					
+					g.fillArc(percentX(38) + percentY(0.5), percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.shield.getArcCooldown());					
 				}
 				////////////
 				//pUP2
@@ -180,7 +181,7 @@ public class Renderer extends JPanel {
 					g.setColor(new Color(0,0,0,150));
 					g.fillRect(percentX(45), percentY(95.5),percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
-					g.fillArc(percentX(45) + percentY(0.5), percentY(96),percentY(3.25), percentY(3.25), 90, m.ship.multi.getCurrentCooldown()*3/10);
+					g.fillArc(percentX(45) + percentY(0.5), percentY(96),percentY(3.25), percentY(3.25), 90, m.ship.multi.getArcCooldown());
 					
 					
 				}
@@ -199,7 +200,7 @@ public class Renderer extends JPanel {
 					g.setColor(new Color(0,0,0,150));
 					g.fillRect(percentX(52),percentY(95.5), percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
-					g.fillArc(percentX(52) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.boost.getCurrentCooldown()*3/10);
+					g.fillArc(percentX(52) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.boost.getArcCooldown());
 				}
 				
 				
@@ -211,12 +212,12 @@ public class Renderer extends JPanel {
 				//pUP4ACTIVE
 				if(m.ship.mega.isActive()){
 					g.setColor(new Color(0,0,255,150));
-					g.fillRect(percentX(59), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.boost.percentRemaining()));
+					g.fillRect(percentX(59), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.mega.percentRemaining()));
 				} else if(m.ship.mega.isOnCooldown()) {
 					g.setColor(new Color(0,0,0,150));
 					g.fillRect(percentX(59),percentY(95.5), percentY(4.25), percentY(4.25));
 					g.setColor(Color.WHITE);
-					g.fillArc(percentX(59) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.mega.getCurrentCooldown()*3/10);
+					g.fillArc(percentX(59) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.mega.getArcCooldown());
 				}
 				////////////
 				//vert Line 3
@@ -232,17 +233,16 @@ public class Renderer extends JPanel {
 				
 				
 				//miniShip
-				progress = m.world.getScore() * 5/100;
-				if(progress > 500)
-					progress = 500;
-				g.drawImage(m.ship.image, percentX(72),percentY(96.5),23,23,this);
-				
-//				if(progress == 500 && progressFlash)
-//				{
-					g.setFont(new Font("Monospaced", Font.BOLD, 30));
+				progress =(m.world.getScore() + 0.0) / m.world.firstBossScore;
+				if(progress > 1)
+					progress = 1;
+				g.drawImage(m.ship.image, (int) (percentX(72) + (percentX(24) * progress)),percentY(96.5),percentY(2.25),percentY(2.25),this);
+				if(progress >= 1 && progressFlash)
+				{
+					g.setFont(new Font("Monospaced", Font.BOLD, percentY(2.5)));
 					g.setColor(Color.RED.darker());
 					g.drawString("!", percentX(98), percentY(98.25));
-//				}
+				}
 				
 			}
 			/////////////////////////////////////////////////////
@@ -254,25 +254,25 @@ public class Renderer extends JPanel {
 				g.fillRect(0, 0, m.f.WIDTH, m.f.HEIGHT);
 				
 				g.setColor(Color.WHITE);
-				g.setFont(new Font("Monospaced", Font.BOLD, 80));
+				g.setFont(new Font("Monospaced", Font.BOLD, percentY(7.5)));
 				fontMetrics = g.getFontMetrics();
-				g.drawString("You Died", (m.f.WIDTH - fontMetrics.stringWidth("You Died"))/2, (m.f.HEIGHT - 80)/2);
+				g.drawString("You Died", (m.f.WIDTH - fontMetrics.stringWidth("You Died"))/2, (m.f.HEIGHT - percentY(7.5))/2);
 				
-				g.setFont(new Font("Monospaced", Font.PLAIN, 30));
+				g.setFont(new Font("Monospaced", Font.PLAIN, percentY(2.5)));
 				fontMetrics = g.getFontMetrics();
-				g.drawString("Press 'Space' to continue", (m.f.WIDTH - fontMetrics.stringWidth("Press 'Space' to continue"))/2 , (m.f.HEIGHT - 30)/2 + 30);
+				g.drawString("Press 'Space' to continue", (m.f.WIDTH - fontMetrics.stringWidth("Press 'Space' to continue"))/2 , (m.f.HEIGHT - percentY(2.5))/2 + 30);
 			}
 			
 			/////////////////////////////////////////////////////
 			//Pause Screen
 			if(m.f.paused)
 			{
-				g.setFont(new Font("Monospaced", Font.BOLD, 60));
+				g.setFont(new Font("Monospaced", Font.BOLD, percentY(5)));
 				fontMetrics = g.getFontMetrics();
 				g.setColor(new Color(0,0,0,150));
 				g.fillRect(0, 0, m.f.WIDTH, m.f.HEIGHT);
 				g.setColor(Color.WHITE);
-				g.drawString("PAUSED", (m.f.WIDTH - fontMetrics.stringWidth("PAUSED"))/2, (m.f.HEIGHT - 60)/2);
+				g.drawString("PAUSED", (m.f.WIDTH - fontMetrics.stringWidth("PAUSED"))/2, (m.f.HEIGHT - percentY(5))/2);
 			}
 		}
 	}

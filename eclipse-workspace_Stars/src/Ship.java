@@ -18,9 +18,10 @@ public class Ship {
 	public int dy;
 	public int dx;
 	public int health = 100;
+	public int maxHealth = 100;
 	public int speed = 10;
 	public BufferedImage image;
-	public Rectangle hitbox = new Rectangle (64, 64);
+	public Rectangle hitbox;
 	private ArrayList<Missile> missiles;
 
 	
@@ -28,20 +29,27 @@ public class Ship {
 	
 	public Ship(Main m) {
 		this.m = m;
-		mega = new Mega();
 		
 		missiles = new ArrayList<Missile>();
+		int width = m.f.jp.percentY(6);
+		int height = m.f.jp.percentY(6);
+		hitbox = new Rectangle(m.f.WIDTH - width, (m.f.HEIGHT - height)/2, width, height);
 		try {
 			image = ImageIO.read(new File("res\\Spaceship.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		hitbox.x = m.f.WIDTH;
-		hitbox.y = m.f.HEIGHT/2;
+		mega = new Mega();
 		startingAnim();
 	}
-	
+	public double healthAsPercent() {
+		return (health + 0.0) / (maxHealth + 0.0);
+	}
+	public void stopPressingKeys() {
+		this.dx = 0;
+		this.dy = 0;
+		this.isFiring = false;
+	}
 	
 	public void resurrect() {
 		alive = true;
@@ -49,12 +57,12 @@ public class Ship {
 		hitbox.x = m.f.WIDTH;
 		hitbox.y = m.f.HEIGHT/2;
 		m.t.healthShow = false;
-		m.world.setScore(0);
-		m.world.spawnAmt = 2;
+		m.world.reset();
+		shield.reset();
+		multi.reset();
+		boost.reset();
+		mega.reset();
 		startingAnim();
-
-		
-		
 		
 	}
 	public void die() {
@@ -67,11 +75,14 @@ public class Ship {
 	}
 	
 	public void fire() {
-		missiles.add(new Missile(hitbox.x, hitbox.y,50,5));
+		int missileHeight = m.f.jp.percentY(0.5);
+		int missileWidth = m.f.jp.percentY(4.5);
+		
+		missiles.add(new Missile(hitbox.x + hitbox.width, hitbox.y + (hitbox.height - missileHeight)/ 2, missileWidth, missileHeight));
 		
 		if(multi.isActive()) {
-			missiles.add(new Missile(hitbox.x - 25, hitbox.y + 27,50,5));
-			missiles.add(new Missile(hitbox.x - 25, hitbox.y - 27,50,5));
+			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 1/10), m.f.jp.percentY(4.5), m.f.jp.percentY(0.5)));
+			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 9/10), m.f.jp.percentY(4.5), m.f.jp.percentY(0.5)));
 		}
 	}
 
@@ -84,13 +95,16 @@ public class Ship {
 	private void checkOOB() {
 		if (hitbox.x < 0)
 			hitbox.x = 0;
-		else if (hitbox.x > m.f.WIDTH-80)
-			hitbox.x = m.f.WIDTH-80;
+		//checks if right edge of ship is touching right edge of screen
+		else if (hitbox.x + hitbox.width >= m.f.WIDTH )
+			hitbox.x = m.f.WIDTH - hitbox.width;
 		
-		if (hitbox.y < 10)
-			hitbox.y = 10;
-		else if (hitbox.y > m.f.HEIGHT - 170)
-			hitbox.y = m.f.HEIGHT - 170;
+		if (hitbox.y <  m.f.jp.percentY(1))
+			hitbox.y =  m.f.jp.percentY(1);
+		
+		//checks if bottom edge of ship is touching the toolbar
+		else if (hitbox.y + hitbox.height >= m.f.jp.percentY(94))
+			hitbox.y = m.f.jp.percentY(94) - hitbox.height;
 	}
 
 	public int getShipX() {
@@ -116,8 +130,10 @@ public class Ship {
 
 			if (missile.getX() < m.f.WIDTH)
 				missile.move();
-			else
+			else {
+				this.missiles.get(i).stopSound();
 				this.missiles.remove(i);
+			}
 		}
 	}
 	
@@ -129,7 +145,7 @@ public class Ship {
 		
 		//w=1920,500
 		public Mega() {
-			super(300, 3200, "res\\mega.wav");
+			super(300, 3200, 1600, "res\\mega.wav");
 			//TODO program doesnt finish running implementation of f when this is called, leading to nullPoint
 //			hitbox = new Rectangle(m.f.WIDTH , m.f.HEIGHT / 2);
 			hitbox = new Rectangle(1920 ,500);
@@ -151,10 +167,8 @@ public class Ship {
 			return hitbox.height;
 		}
 		public boolean intersects(Rectangle rect) {
-			if(this.hitbox.intersects(rect)) 
-				return true;
-			else 
-				return false;
+			return this.hitbox.intersects(rect);
+
 		}
 		
 		@Override

@@ -13,7 +13,7 @@ public class Tick {
 		this.frame = m.f;
 	}
 	public void update() {
-		if(!m.f.paused)
+		if(!m.f.paused && m.ship.alive)
 		{
 			count++;
 			if (fireCooldown > 0)
@@ -23,7 +23,7 @@ public class Tick {
 			
 			if(count == 155 && healthShow == false)
 				healthShow = true;
-			//if(count % 1 == 0 && m.ship.alive)
+//			if(count % 1 == 0)
 			if(count % 155 == 0 && m.ship.alive)
 				m.world.spawnMeteor();
 			if(count > 60000)
@@ -35,7 +35,7 @@ public class Tick {
 			
 			m.ship.move();
 			
-			if (m.ship.isFiring && m.ship.alive && !m.ship.mega.isActive()) {
+			if (m.ship.isFiring && !m.ship.mega.isActive()) {
 				if (fireCooldown <= 0) {
 					fireCooldown = 15;
 					m.ship.fire();
@@ -54,14 +54,11 @@ public class Tick {
 				m.ship.speed = 10;
 			}
 			
-			if(frame.jp.progress >= 500)
+			if(frame.jp.progress >= 1)
 			{
 				if (count % 20 == 0 && flashCount <= 4)
 				{
-					if(frame.jp.progressFlash)
-						frame.jp.progressFlash = false;
-					else
-						frame.jp.progressFlash = true;
+					frame.jp.progressFlash = !frame.jp.progressFlash;
 					flashCount++;
 				}
 				
