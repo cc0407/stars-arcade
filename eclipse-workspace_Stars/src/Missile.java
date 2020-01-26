@@ -1,5 +1,4 @@
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 public class Missile {
 	private Sound missileSound = new Sound("res\\pew2.wav");

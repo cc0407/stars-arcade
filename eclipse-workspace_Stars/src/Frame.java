@@ -4,7 +4,6 @@ import java.awt.Dimension;
 
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Frame {
 	public int HEIGHT;

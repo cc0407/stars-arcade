@@ -77,7 +77,7 @@ public class Renderer extends JPanel {
 			if(m.ship.shield.isActive())
 			{
 				g.setColor(new Color(0,0,255,100));
-				g.fillOval(m.ship.hitbox.x - 24, m.ship.hitbox.y - 20, m.ship.hitbox.width + 40, m.ship.hitbox.height + 40);
+				g.fillOval(m.ship.hitbox.x - percentY(2), m.ship.hitbox.y - percentY(2), m.ship.hitbox.width + percentY(3.7), m.ship.hitbox.height + percentY(3.7));
 			}
 			
 			//mega
@@ -85,8 +85,8 @@ public class Renderer extends JPanel {
 			{
 				shipX = m.ship.getShipX();
 				shipY = m.ship.getShipY();
-				int[] xComp = {shipX + 100, shipX + 50, shipX + 50, shipX + 100};
-				int[] yComp = {shipY + 286, shipY + 34, shipY + 30, shipY - 218,};
+				int[] xComp = {shipX + percentX(5.25), shipX + percentX(3.4),shipX + percentX(3.4), shipX + percentX(5.25)};
+				int[] yComp = {shipY + percentY(26.5), shipY + percentY(3.15), shipY + percentY(2.8), shipY - percentY(20)};
 				g.setColor(Color.RED);
 				g.fillPolygon(xComp, yComp, 4);
 				g.fillRect(m.ship.mega.getX(), m.ship.mega.getY(), m.ship.mega.getWidth(), m.ship.mega.getHeight());
@@ -95,29 +95,24 @@ public class Renderer extends JPanel {
 			
 			
 			//Missiles
-			ArrayList<Missile> ms = m.ship.getMissiles();
-			for (Object m1 : ms) {
-				Missile m = (Missile) m1;
+			for (Missile m : m.ship.getMissiles()) {
 				g.setColor(Color.RED);
-				g.fillRect(m.getX(), m.getY(), m.hitbox.width, 5);
+				g.fillRect(m.getX(), m.getY(), m.hitbox.width, m.hitbox.height);
 				
 				if(showBoxes) {
-				g.setColor(Color.BLUE);
-				g.drawRect(m.hitbox.x, m.hitbox.y, 50, 5);
+					g.setColor(Color.BLUE);
+					g.drawRect(m.hitbox.x, m.hitbox.y, m.hitbox.width, m.hitbox.height);
 				}
 			}
 			
 			//Meteors
-			ArrayList<Meteor> mt = m.world.getMeteors();
-			for (Object m2 : mt) {
-				Meteor m = (Meteor) m2;
+			for (Meteor m : m.world.getMeteors()) {
 				g.setColor(Color.WHITE);
 				g.drawImage(meteorImg, m.getX(), m.getY(), m.hitbox.width, m.hitbox.height,this);
-				//g.fillRect(m.getX(), m.getY(), m.hitbox.width, m.hitbox.height);
 				
 				if(showBoxes) {
-				g.setColor(Color.BLUE);
-				g.drawRect(m.hitbox.x, m.hitbox.y, m.hitbox.width, m.hitbox.height);
+					g.setColor(Color.BLUE);
+					g.drawRect(m.hitbox.x, m.hitbox.y, m.hitbox.width, m.hitbox.height);
 				}
 			}
 			

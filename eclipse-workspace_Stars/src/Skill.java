@@ -1,5 +1,4 @@
 
-import java.awt.Rectangle;
 
 public class Skill {
 	public static final Skill SHIELD = new Skill(300, 600, "res\\Shield.wav");

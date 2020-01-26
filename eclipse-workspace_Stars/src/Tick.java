@@ -43,7 +43,6 @@ public class Tick {
 			}
 			
 			
-			//TODO FIX ALL OF THIS
 			m.ship.mega.timeLeft();
 	
 			m.ship.shield.timeLeft();

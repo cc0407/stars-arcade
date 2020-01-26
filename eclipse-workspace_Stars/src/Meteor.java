@@ -1,5 +1,4 @@
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 public class Meteor {
 	private final int METEOR_SPEED;

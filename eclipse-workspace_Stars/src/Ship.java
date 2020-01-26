@@ -164,8 +164,7 @@ public class Ship {
 		
 		//w=1920,500
 		public Mega() {
-			super(300, 3200, 1600, "res\\mega.wav");
-			//TODO program doesnt finish running implementation of f when this is called, leading to nullPoint
+			super(300, 3200, 0, "res\\mega.wav");
 //			hitbox = new Rectangle(m.f.WIDTH , m.f.HEIGHT / 2);
 			hitbox = new Rectangle(1920 ,500);
 			updateHitbox();
