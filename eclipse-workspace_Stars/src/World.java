@@ -65,10 +65,10 @@ public class World {
 		{
 			x = rand.nextInt(2000) + frame.WIDTH;
 			y =  rand.nextInt(frame.HEIGHT/2);
-			meteors.add(new Meteor(x, y));
+			meteors.add(new Meteor(x, y, frame.jp.percentY(6), frame.jp.percentY(6), frame.jp.percentY(0.2)));
 			
 			y =  rand.nextInt(frame.HEIGHT/2) + frame.HEIGHT/2 - 160;
-			meteors.add(new Meteor(x, y));
+			meteors.add(new Meteor(x, y, frame.jp.percentY(6), frame.jp.percentY(6), frame.jp.percentY(0.2)));
 		}
 	}
 	

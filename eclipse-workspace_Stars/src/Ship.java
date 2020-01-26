@@ -19,10 +19,14 @@ public class Ship {
 	public int dx;
 	public int health = 100;
 	public int maxHealth = 100;
-	public int speed = 10;
+	public int speed;
+	public int currentSpeed;
 	public BufferedImage image;
 	public Rectangle hitbox;
 	private ArrayList<Missile> missiles;
+	int missileHeight;
+	int missileWidth;
+	int missileSpeed;
 
 	
 	public Main m;
@@ -30,7 +34,15 @@ public class Ship {
 	public Ship(Main m) {
 		this.m = m;
 		
+		
 		missiles = new ArrayList<Missile>();
+		
+		missileHeight = m.f.jp.percentY(0.5);
+		missileWidth = m.f.jp.percentY(4.5);
+		missileSpeed = m.f.jp.percentY(1.4);
+		this.speed = m.f.jp.percentY(1);
+		this.currentSpeed = this.speed;
+		
 		int width = m.f.jp.percentY(6);
 		int height = m.f.jp.percentY(6);
 		hitbox = new Rectangle(m.f.WIDTH - width, (m.f.HEIGHT - height)/2, width, height);
@@ -75,14 +87,13 @@ public class Ship {
 	}
 	
 	public void fire() {
-		int missileHeight = m.f.jp.percentY(0.5);
-		int missileWidth = m.f.jp.percentY(4.5);
+
 		
-		missiles.add(new Missile(hitbox.x + hitbox.width, hitbox.y + (hitbox.height - missileHeight)/ 2, missileWidth, missileHeight));
+		missiles.add(new Missile(hitbox.x + hitbox.width, hitbox.y + (hitbox.height - missileHeight)/ 2, missileWidth, missileHeight, missileSpeed, true));
 		
 		if(multi.isActive()) {
-			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 1/10), m.f.jp.percentY(4.5), m.f.jp.percentY(0.5)));
-			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 9/10), m.f.jp.percentY(4.5), m.f.jp.percentY(0.5)));
+			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 1/10), missileWidth, missileHeight, missileSpeed, false));
+			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 9/10), missileWidth, missileHeight, missileSpeed, false));
 		}
 	}
 
@@ -105,6 +116,14 @@ public class Ship {
 		//checks if bottom edge of ship is touching the toolbar
 		else if (hitbox.y + hitbox.height >= m.f.jp.percentY(94))
 			hitbox.y = m.f.jp.percentY(94) - hitbox.height;
+	}
+	
+	public void increaseSpeed() {
+		this.currentSpeed *= 1.5;
+	}
+	
+	public void revertSpeed() {
+		this.currentSpeed = speed;
 	}
 
 	public int getShipX() {

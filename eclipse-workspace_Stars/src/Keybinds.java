@@ -23,19 +23,19 @@ public class Keybinds extends JComponent implements KeyListener {
 		{
 	
 			if (key == KeyEvent.VK_A) {
-				m.ship.dx = -m.ship.speed;
+				m.ship.dx = -m.ship.currentSpeed;
 			}
 	
 			if (key == KeyEvent.VK_D) {
-				m.ship.dx = m.ship.speed;
+				m.ship.dx = m.ship.currentSpeed;
 			}
 	
 			if (key == KeyEvent.VK_W) {
-				m.ship.dy = -m.ship.speed;
+				m.ship.dy = -m.ship.currentSpeed;
 			}
 	
 			if (key == KeyEvent.VK_S) {
-				m.ship.dy = m.ship.speed;
+				m.ship.dy = m.ship.currentSpeed;
 			}
 			if (key == KeyEvent.VK_SPACE) {
 				if(m.ship.alive)
@@ -58,7 +58,7 @@ public class Keybinds extends JComponent implements KeyListener {
 			
 			if (key == KeyEvent.VK_3) {
 				if(m.ship.boost.start()){
-					m.ship.speed = 15;
+					m.ship.increaseSpeed();
 				}
 			}
 			

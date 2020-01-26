@@ -51,7 +51,7 @@ public class Tick {
 			m.ship.multi.timeLeft();
 			
 			if(m.ship.boost.timeLeft() == 0) {
-				m.ship.speed = 10;
+				m.ship.revertSpeed();
 			}
 			
 			if(frame.jp.progress >= 1)

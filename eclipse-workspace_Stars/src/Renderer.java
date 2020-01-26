@@ -140,7 +140,7 @@ public class Renderer extends JPanel {
 					g.setColor(new 	Color(255, 0,0, 255));
 				g.fillRect(percentX(0.25), percentY(96), (int) (percentX(22) * m.ship.healthAsPercent()), percentY(3.5));
 				g.setColor(Color.BLACK);		
-				g.drawRect(percentX(0.25), percentY(96), (int) (percentX(22) * m.ship.healthAsPercent()) , percentY(3.5));
+				g.drawRect(percentX(0.25), percentY(96), (percentX(22)) , percentY(3.5));
 
 				//Score
 				g.setFont(new Font("Monospaced", Font.BOLD, percentY(2.5)));

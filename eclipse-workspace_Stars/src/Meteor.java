@@ -2,14 +2,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Meteor {
-	private final int METEOR_SPEED = 2;
+	private final int METEOR_SPEED;
 	
 	public Rectangle hitbox;
 	
-	public Meteor(int x, int y) {
-		hitbox = new Rectangle(64 , 64);
-		hitbox.x = x;
-		hitbox.y = y;
+	public Meteor(int x, int y, int width, int height, int speed) {
+		hitbox = new Rectangle(x, y, width, height);
+		METEOR_SPEED = speed;
 	}
 
 	public void move() {

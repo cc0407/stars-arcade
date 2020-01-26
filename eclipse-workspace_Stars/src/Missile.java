@@ -3,18 +3,21 @@ import java.util.ArrayList;
 
 public class Missile {
 	private Sound missileSound = new Sound("res\\pew2.wav");
-	private final int MISSILE_SPEED = 15;
-
+	private final int MISSILE_SPEED;
+	private final boolean hasSound;
 	public Rectangle hitbox;
 	
 	//w=50, h =5
-	public Missile(int x, int y, int width, int height) {
-		hitbox = new Rectangle(width , height);
-		hitbox.x = x;
-		hitbox.y = y;
+	public Missile(int x, int y, int width, int height, int speed, boolean hasSound) {
+		hitbox = new Rectangle(x, y, width , height);
+		MISSILE_SPEED = speed;
+		this.hasSound = hasSound;
+//		hitbox.x = x;
+//		hitbox.y = y;
 //		hitbox.x = x + 50;
 //		hitbox.y = y + 30;
-		startSound();   
+		if(hasSound)
+			startSound();   
 	}
 
 	public void move() {
@@ -31,14 +34,17 @@ public class Missile {
 	}
 	
 	public void pauseSound() {
-		missileSound.pause();
+		if(this.hasSound)
+			missileSound.pause();
 	}
 
 	public void startSound() {
-		missileSound.play();
+		if(this.hasSound)
+			missileSound.play();
 	}
 	public void stopSound() {
-		missileSound.stop();
+		if(this.hasSound)
+			missileSound.stop();		
 	}
 
 }
