@@ -30,8 +30,6 @@ public class Tick {
 				count = 0;
 			if(count % 2400 == 0)
 				m.world.spawnAmt++;
-			if(m.ship.health <= 0)
-				m.ship.die();
 			
 			m.ship.move();
 			

@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -5,7 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-
+enum Direction{
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN;
+}
 public class Ship {
 
 
@@ -15,14 +21,14 @@ public class Ship {
 	public Skill multi = Skill.MULTI;
 	public Skill boost = Skill.BOOST;
 	public Mega mega;
-	public int dy;
-	public int dx;
-	public int health = 100;
-	public int maxHealth = 100;
-	public int speed;
-	public int currentSpeed;
-	public BufferedImage image;
-	public Rectangle hitbox;
+	private int dy;
+	private int dx;
+	private int health = 100;
+	private int maxHealth = 100;
+	private int speed;
+	private int currentSpeed;
+	private BufferedImage image;
+	private Rectangle hitbox;
 	private ArrayList<Missile> missiles;
 	int missileHeight;
 	int missileWidth;
@@ -54,13 +60,74 @@ public class Ship {
 		mega = new Mega();
 		startingAnim();
 	}
+	
+	//Use this to increase or decrease health
+	public void changeHealth(int amt) {
+		this.health += amt;
+		if(this.health <= 0) {
+			this.die();
+		}
+	}
+	
+	public Color getHealthColour() {
+		double percentHealth = healthAsPercent();
+		Color c = Color.RED;
+		
+		if(percentHealth > 0.61) {
+			c = Color.GREEN;
+		}
+		else if(percentHealth > 0.21)
+			c = Color.YELLOW;
+		
+		return c;
+	}
+	
 	public double healthAsPercent() {
 		return (health + 0.0) / (maxHealth + 0.0);
 	}
+	
 	public void stopPressingKeys() {
 		this.dx = 0;
 		this.dy = 0;
 		this.isFiring = false;
+	}
+	
+	public void setDirection(Direction d) {
+		switch(d) {
+			case LEFT:
+				this.dx = -this.currentSpeed;
+				break;
+			
+			case RIGHT:
+				this.dx = this.currentSpeed;
+				break;
+			
+			case UP:
+				this.dy = -this.currentSpeed;
+				break;
+				
+			case DOWN:
+				this.dy = this.currentSpeed;
+				break;
+		}
+				
+	}
+	
+	public void stopDirection(Direction d) {
+		switch(d) {
+			case LEFT:
+			
+			case RIGHT:
+				this.dx = 0;
+				break;
+			
+			case UP:
+				
+			case DOWN:
+				this.dy = 0;
+				break;
+		}
+				
 	}
 	
 	public void resurrect() {
@@ -118,20 +185,32 @@ public class Ship {
 			hitbox.y = m.f.jp.percentY(94) - hitbox.height;
 	}
 	
-	public void increaseSpeed() {
-		this.currentSpeed *= 1.5;
+	public void increaseSpeed(double percentAsDecimal) {
+		this.currentSpeed *= percentAsDecimal;
 	}
 	
 	public void revertSpeed() {
 		this.currentSpeed = speed;
 	}
 
-	public int getShipX() {
+	public int getX() {
 		return hitbox.x;
 	}
 
-	public int getShipY() {
+	public int getY() {
 		return hitbox.y;
+	}
+	
+	public int getWidth() {
+		return hitbox.width;
+	}
+	
+	public int getHeight() {
+		return hitbox.height;
+	}
+	
+	public boolean intersects(Rectangle r) {
+		return this.hitbox.intersects(r);
 	}
 
 	public BufferedImage getImage() {
@@ -139,7 +218,13 @@ public class Ship {
 	}
 
 	public ArrayList<Missile> getMissiles() {
-		return missiles;
+		return new ArrayList<>(missiles);
+	}
+	
+	public void removeMissile(Missile m) {
+		int index = this.missiles.indexOf(m);
+		this.missiles.get(index).stopSound();
+		this.missiles.remove(m);
 	}
 	
 	public void updateMissiles() {
@@ -164,18 +249,18 @@ public class Ship {
 		
 		//w=1920,500
 		public Mega() {
-			super(300, 3200, 0, "res\\mega.wav");
+			super(300, 3200, 1600, "res\\mega.wav");
 //			hitbox = new Rectangle(m.f.WIDTH , m.f.HEIGHT / 2);
 			hitbox = new Rectangle(1920 ,500);
 			updateHitbox();
 
 		}
 		
-		public int getX() {
+		public int getMegaX() {
 			return hitbox.x;
 		}
 
-		public int getY() {
+		public int getMegaY() {
 			return hitbox.y;
 		}
 		public int getWidth() {
@@ -205,8 +290,8 @@ public class Ship {
 			return ticksLeft;
 		}
 		public void updateHitbox() {
-					hitbox.x = getShipX() + 100;
-					hitbox.y = getShipY() - 218;
+					hitbox.x = getX() + 100;
+					hitbox.y = getX() - 218;
 		}
 	}
 }

@@ -23,20 +23,21 @@ public class Keybinds extends JComponent implements KeyListener {
 		{
 	
 			if (key == KeyEvent.VK_A) {
-				m.ship.dx = -m.ship.currentSpeed;
+				m.ship.setDirection(Direction.LEFT);
 			}
 	
 			if (key == KeyEvent.VK_D) {
-				m.ship.dx = m.ship.currentSpeed;
+				m.ship.setDirection(Direction.RIGHT);
 			}
 	
 			if (key == KeyEvent.VK_W) {
-				m.ship.dy = -m.ship.currentSpeed;
+				m.ship.setDirection(Direction.UP);
 			}
 	
 			if (key == KeyEvent.VK_S) {
-				m.ship.dy = m.ship.currentSpeed;
+				m.ship.setDirection(Direction.DOWN);
 			}
+			
 			if (key == KeyEvent.VK_SPACE) {
 				if(m.ship.alive)
 					m.ship.isFiring = true;
@@ -58,7 +59,7 @@ public class Keybinds extends JComponent implements KeyListener {
 			
 			if (key == KeyEvent.VK_3) {
 				if(m.ship.boost.start()){
-					m.ship.increaseSpeed();
+					m.ship.increaseSpeed(1.5);
 				}
 			}
 			
@@ -84,19 +85,19 @@ public class Keybinds extends JComponent implements KeyListener {
 		if(!freeze) 
 		{
 			if (key == KeyEvent.VK_A) {
-				m.ship.dx = 0;
+				m.ship.stopDirection(Direction.LEFT);
 			}
 	
 			if (key == KeyEvent.VK_D) {
-				m.ship.dx = 0;
+				m.ship.stopDirection(Direction.RIGHT);
 			}
 	
 			if (key == KeyEvent.VK_W) {
-				m.ship.dy = 0;
+				m.ship.stopDirection(Direction.UP);
 			}
 	
 			if (key == KeyEvent.VK_S) {
-				m.ship.dy = 0;
+				m.ship.stopDirection(Direction.DOWN);
 			}
 			if (key == KeyEvent.VK_SPACE) {
 				m.ship.isFiring = false;

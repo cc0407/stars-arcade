@@ -20,7 +20,6 @@ public class Missile {
 	}
 
 	public void move() {
-
 		hitbox.x += MISSILE_SPEED;
 	}
 

@@ -88,12 +88,16 @@ public class World {
 			else
 			{
 				this.meteors.remove(i);
-				m.ship.health-=10;
+				m.ship.changeHealth(-10);
 			}
 		}
 	}
 	public ArrayList<Meteor> getMeteors() {
-		return meteors;
+		return new ArrayList<>(meteors);
+	}
+	
+	public void removeMeteor(Meteor m) {
+		this.meteors.remove(m);
 	}
 	
 	public void updateBackground() {

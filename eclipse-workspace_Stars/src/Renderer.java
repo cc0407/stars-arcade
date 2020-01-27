@@ -64,12 +64,12 @@ public class Renderer extends JPanel {
 			//ship
 			if(m.ship.alive)
 			{
-				g.drawImage(m.ship.image, m.ship.hitbox.x, m.ship.hitbox.y, m.ship.hitbox.width, m.ship.hitbox.height, this);
+				g.drawImage(m.ship.getImage(), m.ship.getX(), m.ship.getY(), m.ship.getWidth(), m.ship.getHeight(), this);
 	
 			
 				if(showBoxes){
 					g.setColor(Color.BLUE);
-					g.drawRect(m.ship.hitbox.x, m.ship.hitbox.y, m.ship.hitbox.width, m.ship.hitbox.height);
+					g.drawRect(m.ship.getX(), m.ship.getY(), m.ship.getWidth(), m.ship.getHeight());
 				}
 			}
 			
@@ -77,19 +77,19 @@ public class Renderer extends JPanel {
 			if(m.ship.shield.isActive())
 			{
 				g.setColor(new Color(0,0,255,100));
-				g.fillOval(m.ship.hitbox.x - percentY(2), m.ship.hitbox.y - percentY(2), m.ship.hitbox.width + percentY(3.7), m.ship.hitbox.height + percentY(3.7));
+				g.fillOval(m.ship.getX() - percentY(2), m.ship.getY() - percentY(2), m.ship.getWidth() + percentY(3.7), m.ship.getHeight() + percentY(3.7));
 			}
 			
 			//mega
 			if(m.ship.mega.isActive())
 			{
-				shipX = m.ship.getShipX();
-				shipY = m.ship.getShipY();
+				shipX = m.ship.getX();
+				shipY = m.ship.getY();
 				int[] xComp = {shipX + percentX(5.25), shipX + percentX(3.4),shipX + percentX(3.4), shipX + percentX(5.25)};
 				int[] yComp = {shipY + percentY(26.5), shipY + percentY(3.15), shipY + percentY(2.8), shipY - percentY(20)};
 				g.setColor(Color.RED);
 				g.fillPolygon(xComp, yComp, 4);
-				g.fillRect(m.ship.mega.getX(), m.ship.mega.getY(), m.ship.mega.getWidth(), m.ship.mega.getHeight());
+				g.fillRect(m.ship.mega.getMegaX(), m.ship.mega.getMegaY(), m.ship.mega.getWidth(), m.ship.mega.getHeight());
 				
 			}
 			
@@ -127,12 +127,7 @@ public class Renderer extends JPanel {
 				
 		
 				//Health Bar
-				if(m.ship.health>56)
-					g.setColor(new 	Color(0	,255,0, 255));
-				else if(m.ship.health >21)
-					g.setColor(new 	Color(255,255,0, 255));
-				else
-					g.setColor(new 	Color(255, 0,0, 255));
+				g.setColor(m.ship.getHealthColour());
 				g.fillRect(percentX(0.25), percentY(96), (int) (percentX(22) * m.ship.healthAsPercent()), percentY(3.5));
 				g.setColor(Color.BLACK);		
 				g.drawRect(percentX(0.25), percentY(96), (percentX(22)) , percentY(3.5));
@@ -231,7 +226,7 @@ public class Renderer extends JPanel {
 				progress =(m.world.getScore() + 0.0) / m.world.firstBossScore;
 				if(progress > 1)
 					progress = 1;
-				g.drawImage(m.ship.image, (int) (percentX(72) + (percentX(24) * progress)),percentY(96.5),percentY(2.25),percentY(2.25),this);
+				g.drawImage(m.ship.getImage(), (int) (percentX(72) + (percentX(24) * progress)),percentY(96.5),percentY(2.25),percentY(2.25),this);
 				if(progress >= 1 && progressFlash)
 				{
 					g.setFont(new Font("Monospaced", Font.BOLD, percentY(2.5)));
