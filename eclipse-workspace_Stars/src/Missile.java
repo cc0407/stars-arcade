@@ -11,10 +11,6 @@ public class Missile {
 		hitbox = new Rectangle(x, y, width , height);
 		MISSILE_SPEED = speed;
 		this.hasSound = hasSound;
-//		hitbox.x = x;
-//		hitbox.y = y;
-//		hitbox.x = x + 50;
-//		hitbox.y = y + 30;
 		if(hasSound)
 			startSound();   
 	}

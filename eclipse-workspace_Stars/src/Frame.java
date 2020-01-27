@@ -1,16 +1,12 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 
 public class Frame {
 	public int HEIGHT;
 	public int WIDTH;
-	public final int LOWERTENTH;
 	public Renderer jp;
-	public Clip pew;
 	public JFrame jf = new JFrame("Space");
 	public Main m;
 	public Keybinds keybinds;
@@ -23,7 +19,6 @@ public class Frame {
 	public Frame(Main m, Dimension screen) {
 		WIDTH = (int) screen.getWidth();
 		HEIGHT = (int) screen.getHeight();
-		LOWERTENTH = HEIGHT * 9/10;
 		this.m = m;
 		this.keybinds = new Keybinds(m);
 		jp = new Renderer(m);
@@ -70,15 +65,5 @@ public class Frame {
 			return false;
 		}
 	}
-	
-	
-//	public void pause() {
-//		this.keybinds.freeze = true;
-//		paused = true;
-//	}
-//	public void unpause() {
-//		this.keybinds.freeze = false;
-//		paused = false;
-//	}
 
 }

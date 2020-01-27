@@ -1,8 +1,6 @@
 
 public class Tick {
-	public int fireCooldown = 15, count, shieldCountdown = 300, shieldCooldown = 600, multiCountdown = 600, multiCooldown = 1200, boostCountdown = 600, boostCooldown = 1200,
-			megaCountdown = 300, megaCooldown = 3200,
-			flashCount = 0;
+	public int fireCooldown = 15, count, flashCount = 0;
 	public boolean healthShow = false;
 	public Main m;
 	public Frame frame;
@@ -41,13 +39,13 @@ public class Tick {
 			}
 			
 			
-			m.ship.mega.timeLeft();
+			m.ship.mega.decreaseTick();
 	
-			m.ship.shield.timeLeft();
+			m.ship.shield.decreaseTick();
 			
-			m.ship.multi.timeLeft();
+			m.ship.multi.decreaseTick();
 			
-			if(m.ship.boost.timeLeft() == 0) {
+			if(m.ship.boost.decreaseTick() == 0) {
 				m.ship.revertSpeed();
 			}
 			

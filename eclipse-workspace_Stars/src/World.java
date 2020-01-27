@@ -78,20 +78,18 @@ public class World {
 	
 	
 	public void updateMeteors() {
+		for(Meteor meteor : getMeteors()) {
 
-		for (int i = 0; i < this.meteors.size(); i++) {
-
-			Meteor meteor = this.meteors.get(i);
-
-			if (meteor.getX() > -60)
+			if (meteor.getX() + meteor.getWidth() > 0)
 				meteor.move();
 			else
 			{
-				this.meteors.remove(i);
+				this.removeMeteor(meteor);
 				m.ship.changeHealth(-10);
 			}
 		}
 	}
+	
 	public ArrayList<Meteor> getMeteors() {
 		return new ArrayList<>(meteors);
 	}

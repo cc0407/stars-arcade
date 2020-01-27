@@ -69,9 +69,6 @@ public class Keybinds extends JComponent implements KeyListener {
 		}
 			if (key == KeyEvent.VK_ESCAPE) {
 
-//					TODO fix sounds to mute all on pause
-//					Sounds.resumeSound();
-//				Sounds.pauseSound();
 					if(!m.f.togglePause())
 					m.f.jf.repaint();
 				
@@ -102,17 +99,6 @@ public class Keybinds extends JComponent implements KeyListener {
 			if (key == KeyEvent.VK_SPACE) {
 				m.ship.isFiring = false;
 			}
-			
-			if (key == KeyEvent.VK_1) {
-
-			}
-			
-			if (key == KeyEvent.VK_2) {
-
-			}
-			
-			if (key == KeyEvent.VK_3) {
-			}
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
 			m.ship.stopPressingKeys();
@@ -120,7 +106,8 @@ public class Keybinds extends JComponent implements KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-	
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -11,6 +11,9 @@ public class Main {
 	//TODO 6 Boss battles
 	//TODO add sounds
 	//TODO implement more powerups, refactor the 4 in renderer to pull from 4 "active skills" inside ship class
+	//TODO refactor background particles so it doesn't use a 2D array
+	//TODO locate and fix privacy leaks
+	
 
 	public Frame f;
 	public World world;

@@ -8,14 +8,13 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-//TODO shield sound does not play
 public class Sound {
 
 	private String path;
 	private Clip clip;
 	private long clipTime = 0;
 	private static AudioInputStream ais;
-	private final static ArrayList<Sound> sounds = new ArrayList<>();
+	public final static ArrayList<Sound> sounds = new ArrayList<>();
 	// 1 = playing, 0 = stopped, -1 = paused
 	public int playing = 0;
 	
@@ -64,11 +63,16 @@ public class Sound {
 			if(this.playing != 0) {
 				clipTime = 0;
 				clip.stop();
-				this.playing = 0;
 				sounds.remove(this);
+				
+				//for garbage collection, clip.close() caused random freezing
+				clip = null;
+				
+				this.playing = 0;
+
 			}
 		}
-		catch(NullPointerException e) {
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 }

@@ -10,6 +10,7 @@ public class Skill {
 	protected int currentCooldown = 0;
 	protected int startingCooldown;
 	protected int ticksLeft = 0;
+	protected String path;
 	private Sound s;
 	
 	public Skill(int duration, int cooldown, int startingCooldown, String filename) {
@@ -18,6 +19,7 @@ public class Skill {
 		this.cooldown = cooldown;
 		this.startingCooldown = startingCooldown;
 		this.currentCooldown = startingCooldown;
+		this.path = filename;
 		s = new Sound(filename);
 	}
 	
@@ -51,7 +53,7 @@ public class Skill {
 	}
 	
 	public String getPath() {
-		return this.getPath();
+		return this.path;
 	}
 	
 	
@@ -77,12 +79,8 @@ public class Skill {
 		}
 		return false;
 	}
-	
-	public int ticksRemaining() {
-		return this.ticksLeft;
-	}
 
-	public int timeLeft() {
+	public int decreaseTick() {
 		if(!this.isActive) {
 			return -1;
 		}

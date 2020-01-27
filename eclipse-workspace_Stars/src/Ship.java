@@ -155,35 +155,39 @@ public class Ship {
 	
 	public void fire() {
 
-		
-		missiles.add(new Missile(hitbox.x + hitbox.width, hitbox.y + (hitbox.height - missileHeight)/ 2, missileWidth, missileHeight, missileSpeed, true));
+		//sets x value at right side of ship, centers y value on nose of ship, width of missile, height of missile, speed of missile, plays sound true
+		missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, missileWidth, missileHeight, missileSpeed, true));
 		
 		if(multi.isActive()) {
-			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 1/10), missileWidth, missileHeight, missileSpeed, false));
-			missiles.add(new Missile(hitbox.x + (hitbox.width * 6 / 10), hitbox.y + (hitbox.height * 9/10), missileWidth, missileHeight, missileSpeed, false));
+			//sets x value in front of wing guns, sets y value at end of wing guns, width of missile, height of missile, speed of missile, plays sound false
+			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 1/10), missileWidth, missileHeight, missileSpeed, false));
+			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 9/10), missileWidth, missileHeight, missileSpeed, false));
 		}
 	}
 
 	public void move() {
-		hitbox.x += dx;
+		if(getX() + dx < m.f.WIDTH - getWidth() && getX() + dx >= 0) {
+			hitbox.x += dx;
+		}
+		
+		if(getY() + dy + getHeight() < m.f.jp.percentY(94) && getY() + dy >= 0)
 		hitbox.y += dy;
-		checkOOB();
 	}
 
-	private void checkOOB() {
-		if (hitbox.x < 0)
-			hitbox.x = 0;
-		//checks if right edge of ship is touching right edge of screen
-		else if (hitbox.x + hitbox.width >= m.f.WIDTH )
-			hitbox.x = m.f.WIDTH - hitbox.width;
-		
-		if (hitbox.y <  m.f.jp.percentY(1))
-			hitbox.y =  m.f.jp.percentY(1);
-		
-		//checks if bottom edge of ship is touching the toolbar
-		else if (hitbox.y + hitbox.height >= m.f.jp.percentY(94))
-			hitbox.y = m.f.jp.percentY(94) - hitbox.height;
-	}
+//	private void checkOOB() {
+//		if (getX() < 0)
+//			setX(0);
+//		//checks if right edge of ship is touching right edge of screen
+//		else if (getX() + getWidth() >= m.f.WIDTH)
+//			setX(m.f.WIDTH - getWidth());
+//		
+//		if (getY() <  m.f.jp.percentY(1))
+//			setY(m.f.jp.percentY(1));
+//		
+//		//checks if bottom edge of ship is touching the toolbar
+//		else if (getY() + getHeight() >= m.f.jp.percentY(94))
+//			setY(m.f.jp.percentY(94) - getHeight());
+//	}
 	
 	public void increaseSpeed(double percentAsDecimal) {
 		this.currentSpeed *= percentAsDecimal;
@@ -196,9 +200,17 @@ public class Ship {
 	public int getX() {
 		return hitbox.x;
 	}
+	
+	public void setX(int val) {
+		this.hitbox.x = val;
+	}
 
 	public int getY() {
 		return hitbox.y;
+	}
+	
+	public void setY(int val) {
+		this.hitbox.x = val;
 	}
 	
 	public int getWidth() {
@@ -228,17 +240,15 @@ public class Ship {
 	}
 	
 	public void updateMissiles() {
-		for (int i = 0; i < this.missiles.size(); i++) 
-		{
-			Missile missile = this.missiles.get(i);
-
-			if (missile.getX() < m.f.WIDTH)
+		
+		for(Missile missile : getMissiles()) {
+			if (missile.getX() <= m.f.WIDTH)
 				missile.move();
 			else {
-				this.missiles.get(i).stopSound();
-				this.missiles.remove(i);
+				this.removeMissile(missile);
 			}
 		}
+
 	}
 	
 	
@@ -275,7 +285,7 @@ public class Ship {
 		}
 		
 		@Override
-		public int timeLeft() {
+		public int decreaseTick() {
 			if(!this.isActive) {
 				return -1;
 			}
