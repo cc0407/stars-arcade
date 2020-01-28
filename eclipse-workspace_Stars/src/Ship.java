@@ -17,10 +17,7 @@ public class Ship {
 
 	public boolean isFiring = false;
 	public boolean alive = true;
-	public Skill shield = Skill.SHIELD;
-	public Skill multi = Skill.MULTI;
-	public Skill boost = Skill.BOOST;
-	public Mega mega;
+	public Skill[] skills = {Skill.SHIELD, Skill.MULTI, Skill.BOOST, Skill.MEGA};
 	private int dy;
 	private int dx;
 	private int health = 100;
@@ -57,7 +54,6 @@ public class Ship {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		mega = new Mega();
 		startingAnim();
 	}
 	
@@ -137,10 +133,10 @@ public class Ship {
 		hitbox.y = m.f.HEIGHT/2;
 		m.t.healthShow = false;
 		m.world.reset();
-		shield.reset();
-		multi.reset();
-		boost.reset();
-		mega.reset();
+
+		for(Skill s : this.skills) {
+			s.reset();
+		}
 		startingAnim();
 		
 	}
@@ -158,36 +154,31 @@ public class Ship {
 		//sets x value at right side of ship, centers y value on nose of ship, width of missile, height of missile, speed of missile, plays sound true
 		missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, missileWidth, missileHeight, missileSpeed, true));
 		
-		if(multi.isActive()) {
+		if(Skill.MULTI.isActive()) {
 			//sets x value in front of wing guns, sets y value at end of wing guns, width of missile, height of missile, speed of missile, plays sound false
 			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 1/10), missileWidth, missileHeight, missileSpeed, false));
 			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 9/10), missileWidth, missileHeight, missileSpeed, false));
 		}
 	}
-
-	public void move() {
-		if(getX() + dx < m.f.WIDTH - getWidth() && getX() + dx >= 0) {
-			hitbox.x += dx;
-		}
-		
-		if(getY() + dy + getHeight() < m.f.jp.percentY(94) && getY() + dy >= 0)
-		hitbox.y += dy;
+	
+	//for use with 'skill' missiles ie mega
+	public void fire(int width, int height, int speed, boolean follows) {
+		if(follows)
+			missiles.add(new Missile(this, getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, width, height, speed, false));
+		else
+			missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, width, height, speed, false));
 	}
 
-//	private void checkOOB() {
-//		if (getX() < 0)
-//			setX(0);
-//		//checks if right edge of ship is touching right edge of screen
-//		else if (getX() + getWidth() >= m.f.WIDTH)
-//			setX(m.f.WIDTH - getWidth());
-//		
-//		if (getY() <  m.f.jp.percentY(1))
-//			setY(m.f.jp.percentY(1));
-//		
-//		//checks if bottom edge of ship is touching the toolbar
-//		else if (getY() + getHeight() >= m.f.jp.percentY(94))
-//			setY(m.f.jp.percentY(94) - getHeight());
-//	}
+	public void move() {
+		if(getX() + dx < m.f.WIDTH - getWidth() && getX() + dx >= 0)
+			hitbox.x += dx;
+		
+		if(getY() + dy + getHeight() < m.f.jp.percentY(94) && getY() + dy >= 0)
+			hitbox.y += dy;
+		
+		
+		
+	}
 	
 	public void increaseSpeed(double percentAsDecimal) {
 		this.currentSpeed *= percentAsDecimal;
@@ -251,57 +242,33 @@ public class Ship {
 
 	}
 	
+	public void advanceSkills() {
+		for(int i = 0; i < skills.length; i++) {
+			
+			if(skills[i].decreaseTick() == 0) {
+				if(skills[i].getPath().contains("boost"))
+					revertSpeed();
+				if(skills[i].getPath().contains("mega"))
+					removeMega();
+			}
+			
+		}
+	}
 	
-	class Mega extends Skill {
-		public Rectangle hitbox;
-		private final int cooldown = 3200;
-		private final int duration = 300;
-		
-		//w=1920,500
-		public Mega() {
-			super(300, 3200, 1600, "res\\mega.wav");
-//			hitbox = new Rectangle(m.f.WIDTH , m.f.HEIGHT / 2);
-			hitbox = new Rectangle(1920 ,500);
-			updateHitbox();
-
-		}
-		
-		public int getMegaX() {
-			return hitbox.x;
-		}
-
-		public int getMegaY() {
-			return hitbox.y;
-		}
-		public int getWidth() {
-			return hitbox.width;
-		}
-		public int getHeight() {
-			return hitbox.height;
-		}
-		public boolean intersects(Rectangle rect) {
-			return this.hitbox.intersects(rect);
-
-		}
-		
-		@Override
-		public int decreaseTick() {
-			if(!this.isActive) {
-				return -1;
+	public Missile getMega() {
+		for(Missile missile : getMissiles()) {
+			if(missile.isFollowing()) {
+				return missile;
 			}
-			if(ticksLeft <= 0) {
-				ticksLeft = duration;
-				currentCooldown = cooldown;
-				isActive = false;
-				return 0;
-			}
-			this.ticksLeft --;
-			updateHitbox();
-			return ticksLeft;
 		}
-		public void updateHitbox() {
-					hitbox.x = getX() + 100;
-					hitbox.y = getX() - 218;
+		return null;
+	}
+	
+	public void removeMega() {
+		for(Missile missile : getMissiles()) {
+			if(missile.isFollowing()) {
+				this.removeMissile(missile);
+			}
 		}
 	}
 }

@@ -1,17 +1,23 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 
 public class Skill {
-	public static final Skill SHIELD = new Skill(300, 600, "res\\Shield.wav");
-	public static final Skill MULTI = new Skill(600, 1200, "res\\Multi.wav");
-	public static final Skill BOOST = new Skill(600, 1200, "res\\Boost.wav");
+	public static final Skill SHIELD = new Skill(300, 600, "res\\Shield");
+	public static final Skill MULTI = new Skill(600, 1200, "res\\Multi");
+	public static final Skill BOOST = new Skill(600, 1200, "res\\Boost");
+	public static final Skill MEGA = new Skill(300, 3200, "res\\mega");
 	protected boolean isActive = false;
-	private final int duration;
-	private final int cooldown;
+	protected final int duration;
+	protected final int cooldown;
 	protected int currentCooldown = 0;
 	protected int startingCooldown;
 	protected int ticksLeft = 0;
 	protected String path;
-	private Sound s;
+	protected Sound s;
+	protected BufferedImage img;
 	
 	public Skill(int duration, int cooldown, int startingCooldown, String filename) {
 		this.duration = duration;
@@ -20,7 +26,14 @@ public class Skill {
 		this.startingCooldown = startingCooldown;
 		this.currentCooldown = startingCooldown;
 		this.path = filename;
-		s = new Sound(filename);
+		
+		s = new Sound(filename + ".wav");
+		
+		
+		try {
+			img = ImageIO.read(new File(filename + ".png"));
+		}catch(IOException e) {
+		}
 	}
 	
 	public Skill(int duration, int cooldown, String filename) {
@@ -56,6 +69,14 @@ public class Skill {
 		return this.path;
 	}
 	
+	public String getName() {
+		String name = getPath().split("\\")[1];
+		return name;
+	}
+	
+	public BufferedImage getImg() {
+		return this.img;
+	}
 	
 	public boolean isActive() {
 		return this.isActive;
@@ -72,7 +93,7 @@ public class Skill {
 	}
 
 	public boolean start() {
-		if(currentCooldown <= 0) {
+		if(currentCooldown <= 0 && !this.isActive) {
 			this.isActive = true;
 			this.play();
 			return true;

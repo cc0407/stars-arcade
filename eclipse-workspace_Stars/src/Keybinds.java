@@ -17,7 +17,6 @@ public class Keybinds extends JComponent implements KeyListener {
 	}
 	
 	public void keyPressed(KeyEvent e) {
-
 		int key = e.getKeyCode();
 		if(!freeze) 
 		{
@@ -50,21 +49,23 @@ public class Keybinds extends JComponent implements KeyListener {
 			
 			
 			if (key == KeyEvent.VK_1) {
-				m.ship.shield.start();
+				m.ship.skills[0].start();
 			}
 			
 			if (key == KeyEvent.VK_2) {
-				m.ship.multi.start();
+				m.ship.skills[1].start();
 			}
 			
 			if (key == KeyEvent.VK_3) {
-				if(m.ship.boost.start()){
+				if(m.ship.skills[2].start()){
 					m.ship.increaseSpeed(1.5);
 				}
 			}
 			
 			if (key == KeyEvent.VK_4) {
-				m.ship.mega.start();
+				if(m.ship.skills[3].start()) {
+					m.ship.fire(1920, 500, 0, true);
+				}
 			}
 		}
 			if (key == KeyEvent.VK_ESCAPE) {

@@ -13,7 +13,8 @@ public class Main {
 	//TODO implement more powerups, refactor the 4 in renderer to pull from 4 "active skills" inside ship class
 	//TODO refactor background particles so it doesn't use a 2D array
 	//TODO locate and fix privacy leaks
-	
+	//TODO start menu
+	//TODO move bufferedImage for skills from renderer into each skill class
 
 	public Frame f;
 	public World world;
@@ -30,15 +31,14 @@ public class Main {
 	public Main() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		f = new Frame(this, screenSize);
-		f.init();
-		this.ship = new Ship(this);
-		t = new Tick(this);
-		run();
+		
+		f.initGame();
 	}
 
 	public void run() {
 		run = true;
-		f.start();
+		f.paused = false;
+		f.jf.setVisible(true);
 		long lastTime = System.nanoTime();
 		final double amountOfTicks = 60D;
 		double ns = 1000000000 / amountOfTicks;

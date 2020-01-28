@@ -15,6 +15,7 @@ public class Renderer extends JPanel {
 	 * 
 	 */
 	public Main m;
+	public Keybinds keybinds;
 	private static final long serialVersionUID = 1L;
 	private boolean showBoxes = false;
 	public boolean progressFlash = false;
@@ -22,25 +23,25 @@ public class Renderer extends JPanel {
 	public int shipX;
 	public int shipY;
 	private FontMetrics fontMetrics;
-	private BufferedImage shieldImg;
-	private BufferedImage multiImg;
-	private BufferedImage boostImg;
 	private BufferedImage meteorImg;
 	private BufferedImage toolbarImg;
+	private Missile mega;
 	//private int[] xComp = {m.ship.hitbox.x + 100,m.ship.hitbox.x -27, m.ship.hitbox.x + 50, m.ship.hitbox.x, m.ship.hitbox.x + 50,  m.ship.hitbox.x - 27,  m.ship.hitbox.x +100,  m.ship.hitbox.x + 100},
 	//		yComp = {m.ship.hitbox.y +280,  m.ship.hitbox.y - 27,  m.ship.hitbox.y - 13,  m.ship.hitbox.y,  m.ship.hitbox.y + 13,  m.ship.hitbox.y + 27,  m.ship.hitbox.y - 220,  m.ship.hitbox.y + 280};
 	
 	
 	
-	public Renderer(Main m) {
+	public Renderer(Main m, int width, int height) {
 		this.m = m;
+		this.addKeyListener(new Keybinds(m));
+		this.setFocusable(true);
+		this.setBackground(Color.BLACK);
+		this.setSize(width, height);
+		this.setVisible(true);
+		
 		try {
-			shieldImg = ImageIO.read(new File("res\\Shield.png"));
-			multiImg = ImageIO.read(new File("res\\multi.png"));
-			boostImg = ImageIO.read(new File("res\\boost.png"));
 			meteorImg = ImageIO.read(new File("res\\Asteroid.png"));
 			toolbarImg = ImageIO.read(new File("res\\toolbar.png"));
-			//boostImg = ImageIO.read(new File("res\\boost.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,15 +74,15 @@ public class Renderer extends JPanel {
 				}
 			}
 			
-			//Shield
-			if(m.ship.shield.isActive())
+			//m.ship.skill1
+			if(Skill.SHIELD.isActive())
 			{
 				g.setColor(new Color(0,0,255,100));
 				g.fillOval(m.ship.getX() - percentY(2), m.ship.getY() - percentY(2), m.ship.getWidth() + percentY(3.7), m.ship.getHeight() + percentY(3.7));
 			}
 			
 			//mega
-			if(m.ship.mega.isActive())
+			if(Skill.MEGA.isActive())
 			{
 				shipX = m.ship.getX();
 				shipY = m.ship.getY();
@@ -89,7 +90,10 @@ public class Renderer extends JPanel {
 				int[] yComp = {shipY + percentY(26.5), shipY + percentY(3.15), shipY + percentY(2.8), shipY - percentY(20)};
 				g.setColor(Color.RED);
 				g.fillPolygon(xComp, yComp, 4);
-				g.fillRect(m.ship.mega.getMegaX(), m.ship.mega.getMegaY(), m.ship.mega.getWidth(), m.ship.mega.getHeight());
+				try {
+				mega = m.ship.getMega();
+				g.fillRect(mega.getX(), mega.getY(), mega.getWidth(), mega.getHeight());
+				}catch(NullPointerException ignored) {}
 				
 			}
 			
@@ -122,8 +126,7 @@ public class Renderer extends JPanel {
 			{
 	
 				//Panel			
-				g.drawImage(toolbarImg, 0, percentY(95) , m.f.WIDTH, percentY(5) , this);
-
+				g.drawImage(toolbarImg, 0, percentY(95) , this.getWidth(), percentY(5) , this);
 				
 		
 				//Health Bar
@@ -138,77 +141,25 @@ public class Renderer extends JPanel {
 				fontMetrics = g.getFontMetrics();
 				g.drawString(m.world.getScore() + "", percentX(30) - fontMetrics.stringWidth(m.world.getScore() + ""), percentY(98.5));
 
-				////////////
-				//pUP1
-				g.setColor(new Color(255,255,255,255));
-				g.fillRect(percentX(38), percentY(95.5),percentY(4.25), percentY(4.25));
-				g.drawImage(shieldImg, percentX(38), percentY(95.5), percentY(4.25), percentY(4.25), this);
-				//pUP1ACTIVE
-				if(m.ship.shield.isActive())
-				{
-					g.setColor(new Color(0,0,255,150));
-					g.fillRect(percentX(38), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.shield.percentRemaining()));
-				}
-				else if(m.ship.shield.isOnCooldown()) {
-					g.setColor(new Color(0,0,0,150));
-					g.fillRect(percentX(38), percentY(95.5),percentY(4.25), percentY(4.25));
-					g.setColor(Color.WHITE);
-					//g.drawOval(700, 1007, 30, 30);
-					g.fillArc(percentX(38) + percentY(0.5), percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.shield.getArcCooldown());					
-				}
-				////////////
-				//pUP2
-				g.setColor(new Color(255,255,255,255));
-				g.setColor(Color.GRAY);
-				g.drawImage(multiImg, percentX(45),percentY(95.5), percentY(4.25), percentY(4.25), this);
 				
-				//pUP2ACTIVE
-				if(m.ship.multi.isActive())
-				{
-					g.setColor(new Color(0,0,255,150));
-					g.fillRect(percentX(45), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.multi.percentRemaining()));
-				}else if(m.ship.multi.isOnCooldown()) {
-					g.setColor(new Color(0,0,0,150));
-					g.fillRect(percentX(45), percentY(95.5),percentY(4.25), percentY(4.25));
-					g.setColor(Color.WHITE);
-					g.fillArc(percentX(45) + percentY(0.5), percentY(96),percentY(3.25), percentY(3.25), 90, m.ship.multi.getArcCooldown());
-					
-					
-				}
-				////////////
-				//pUP3
-				g.setColor(new Color(255,255,255,255));
-				g.setColor(Color.GRAY);
-				g.drawImage(boostImg, percentX(52),percentY(95.5), percentY(4.25), percentY(4.25), this);
-				
-				//pUP3ACTIVE
-				if(m.ship.boost.isActive())
-				{
-					g.setColor(new Color(0,0,255,150));
-					g.fillRect(percentX(52), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.boost.percentRemaining()));
-				} else if(m.ship.boost.isOnCooldown()) {
-					g.setColor(new Color(0,0,0,150));
-					g.fillRect(percentX(52),percentY(95.5), percentY(4.25), percentY(4.25));
-					g.setColor(Color.WHITE);
-					g.fillArc(percentX(52) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.boost.getArcCooldown());
+				//Skills on toolbar
+				for(int i = 0; i < m.ship.skills.length; i++) {
+					g.setColor(new Color(255,255,255,255));
+					g.fillRect(percentX(38 + (7 * i)), percentY(95.5),percentY(4.25), percentY(4.25));
+					g.drawImage(m.ship.skills[i].getImg(), percentX(38+ (7 * i)), percentY(95.5), percentY(4.25), percentY(4.25), this);
+					if(m.ship.skills[i].isActive())
+					{
+						g.setColor(new Color(0,0,255,150));
+						g.fillRect(percentX(38 + (7 * i)), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.skills[i].percentRemaining()));
+					}
+					else if(m.ship.skills[i].isOnCooldown()) {
+						g.setColor(new Color(0,0,0,150));
+						g.fillRect(percentX(38 + (7 * i)), percentY(95.5),percentY(4.25), percentY(4.25));
+						g.setColor(Color.WHITE);
+						g.fillArc(percentX(38 + (7 * i)) + percentY(0.5), percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.skills[i].getArcCooldown());					
+					}
 				}
 				
-				
-				////////////
-				//pUP4
-				g.setColor(Color.GRAY);
-				g.fillRect(percentX(59),percentY(95.5), percentY(4.25), percentY(4.25));
-				
-				//pUP4ACTIVE
-				if(m.ship.mega.isActive()){
-					g.setColor(new Color(0,0,255,150));
-					g.fillRect(percentX(59), percentY(95.5), percentY(4.25), (int) (percentY(4.25) * m.ship.mega.percentRemaining()));
-				} else if(m.ship.mega.isOnCooldown()) {
-					g.setColor(new Color(0,0,0,150));
-					g.fillRect(percentX(59),percentY(95.5), percentY(4.25), percentY(4.25));
-					g.setColor(Color.WHITE);
-					g.fillArc(percentX(59) + percentY(0.5),percentY(96), percentY(3.25), percentY(3.25), 90, m.ship.mega.getArcCooldown());
-				}
 				////////////
 				//vert Line 3
 				
@@ -241,16 +192,16 @@ public class Renderer extends JPanel {
 			if(!m.ship.alive)
 			{
 				g.setColor(new Color(255,0,0,100));
-				g.fillRect(0, 0, m.f.WIDTH, m.f.HEIGHT);
+				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 				
 				g.setColor(Color.WHITE);
 				g.setFont(new Font("Monospaced", Font.BOLD, percentY(7.5)));
 				fontMetrics = g.getFontMetrics();
-				g.drawString("You Died", (m.f.WIDTH - fontMetrics.stringWidth("You Died"))/2, (m.f.HEIGHT - percentY(7.5))/2);
+				g.drawString("You Died", (this.getWidth() - fontMetrics.stringWidth("You Died"))/2, (this.getHeight() - percentY(7.5))/2);
 				
 				g.setFont(new Font("Monospaced", Font.PLAIN, percentY(2.5)));
 				fontMetrics = g.getFontMetrics();
-				g.drawString("Press 'Space' to continue", (m.f.WIDTH - fontMetrics.stringWidth("Press 'Space' to continue"))/2 , (m.f.HEIGHT - percentY(2.5))/2 + 30);
+				g.drawString("Press 'Space' to continue", (this.getWidth() - fontMetrics.stringWidth("Press 'Space' to continue"))/2 , (this.getHeight() - percentY(2.5))/2 + 30);
 			}
 			
 			/////////////////////////////////////////////////////
@@ -260,28 +211,28 @@ public class Renderer extends JPanel {
 				g.setFont(new Font("Monospaced", Font.BOLD, percentY(5)));
 				fontMetrics = g.getFontMetrics();
 				g.setColor(new Color(0,0,0,150));
-				g.fillRect(0, 0, m.f.WIDTH, m.f.HEIGHT);
+				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 				g.setColor(Color.WHITE);
-				g.drawString("PAUSED", (m.f.WIDTH - fontMetrics.stringWidth("PAUSED"))/2, (m.f.HEIGHT - percentY(5))/2);
+				g.drawString("PAUSED", (this.getWidth() - fontMetrics.stringWidth("PAUSED"))/2, (this.getHeight() - percentY(5))/2);
 			}
 		}
 	}
 	
 	public int percentX(int percent) {
-		return m.f.WIDTH * percent / 100;
+		return this.getWidth() * percent / 100;
 	}
 	
 	public int percentY(int percent) {
-		return m.f.HEIGHT * percent / 100;
+		return this.getHeight() * percent / 100;
 	}
 	
 	public int percentX(double percent) {
-		double result = m.f.WIDTH * percent / 100.0;
+		double result = this.getWidth() * percent / 100.0;
 		return (int) result;
 	}
 	
 	public int percentY(double percent) {
-		double result = m.f.HEIGHT * percent / 100.0;
+		double result = this.getHeight() * percent / 100.0;
 		return (int) result;
 	}
 }

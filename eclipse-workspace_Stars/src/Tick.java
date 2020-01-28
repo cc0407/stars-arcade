@@ -24,30 +24,20 @@ public class Tick {
 //			if(count % 1 == 0)
 			if(count % 155 == 0 && m.ship.alive)
 				m.world.spawnMeteor();
-			if(count > 60000)
+			if(count == Integer.MAX_VALUE)
 				count = 0;
 			if(count % 2400 == 0)
 				m.world.spawnAmt++;
 			
 			m.ship.move();
 			
-			if (m.ship.isFiring && !m.ship.mega.isActive()) {
+			if (m.ship.isFiring && !Skill.MEGA.isActive()) {
 				if (fireCooldown <= 0) {
 					fireCooldown = 15;
 					m.ship.fire();
 					}
 			}
-			
-			
-			m.ship.mega.decreaseTick();
-	
-			m.ship.shield.decreaseTick();
-			
-			m.ship.multi.decreaseTick();
-			
-			if(m.ship.boost.decreaseTick() == 0) {
-				m.ship.revertSpeed();
-			}
+					
 			
 			if(frame.jp.progress >= 1)
 			{
@@ -59,8 +49,9 @@ public class Tick {
 				
 			}
 			
-			
+
 			m.world.updateBackground();
+			m.ship.advanceSkills();
 			m.ship.updateMissiles();
 			m.world.updateMeteors();
 			m.world.col.Check();
