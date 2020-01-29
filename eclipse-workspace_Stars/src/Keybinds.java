@@ -49,23 +49,19 @@ public class Keybinds extends JComponent implements KeyListener {
 			
 			
 			if (key == KeyEvent.VK_1) {
-				m.ship.skills[0].start();
+				m.ship.startSkill(0);
 			}
 			
 			if (key == KeyEvent.VK_2) {
-				m.ship.skills[1].start();
+				m.ship.startSkill(1);
 			}
 			
 			if (key == KeyEvent.VK_3) {
-				if(m.ship.skills[2].start()){
-					m.ship.increaseSpeed(1.5);
-				}
+				m.ship.startSkill(2);
 			}
 			
 			if (key == KeyEvent.VK_4) {
-				if(m.ship.skills[3].start()) {
-					m.ship.fire(1920, 500, 0, true);
-				}
+				m.ship.startSkill(3);
 			}
 		}
 			if (key == KeyEvent.VK_ESCAPE) {

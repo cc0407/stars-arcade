@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 public class Frame {
@@ -34,23 +35,24 @@ public class Frame {
 		jf.getContentPane().setLayout(null);
 		
 		jp = new Renderer(m, WIDTH, HEIGHT);     
-		jf.add(jp);
 		
-		mp = new MenuPanel(new GridBagLayout(), m);
+		mp = new MenuPanel(m);
+		mp.setLayout(new BoxLayout(mp, BoxLayout.Y_AXIS));
 		mp.setFocusable(true);
 		mp.setSize(WIDTH, HEIGHT);
-//		mp.setVisible(true);
-//		jf.add(mp);
-		
-		
-		jf.requestFocus();
+		mp.setVisible(true);
 	}
 	
+	public void initMenu() {
+		m.ship = new Ship(m);
+		jf.add(mp);
+		jf.requestFocus();
+		jf.setVisible(true);
+	}
 	public void initGame() {
-		
+		jf.add(jp);
 		m.world = new World(m);
 		m.t = new Tick(m);
-		m.ship = new Ship(m);
 		m.run();
 	}
 	

@@ -1,7 +1,10 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class MenuPanel extends JPanel {
@@ -18,7 +21,15 @@ public class MenuPanel extends JPanel {
 	public MenuPanel(LayoutManager layout, Main m) {
 		super(layout);
 		this.m = m;
+		this.setBackground(Color.BLACK);
+		JButton test1 = new JButton("Test");		
+		JButton test2 = new JButton("Test");
 		
+		this.add(Box.createVerticalGlue());
+		this.add(test1);
+		this.add(Box.createVerticalGlue());
+		this.add(test2);
+		this.add(Box.createVerticalGlue());
 	}
 
 	@Override
@@ -26,7 +37,9 @@ public class MenuPanel extends JPanel {
 		
 		super.paintComponent(g);
 		
-		g.setColor(Color.yellow);
+		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, m.f.WIDTH, m.f.HEIGHT);
+		
+		g.drawImage(m.ship.getImage(), 50, 50, this);
 	}
 }

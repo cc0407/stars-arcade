@@ -8,7 +8,7 @@ public class Skill {
 	public static final Skill SHIELD = new Skill(300, 600, "res\\Shield");
 	public static final Skill MULTI = new Skill(600, 1200, "res\\Multi");
 	public static final Skill BOOST = new Skill(600, 1200, "res\\Boost");
-	public static final Skill MEGA = new Skill(300, 3200, "res\\mega");
+	public static final Skill MEGA = new Skill(300, 3200, "res\\Mega");
 	protected boolean isActive = false;
 	protected final int duration;
 	protected final int cooldown;
@@ -70,8 +70,8 @@ public class Skill {
 	}
 	
 	public String getName() {
-		String name = getPath().split("\\")[1];
-		return name;
+		String name = getPath().split("\\\\")[1];
+		return name.toLowerCase() ;
 	}
 	
 	public BufferedImage getImg() {

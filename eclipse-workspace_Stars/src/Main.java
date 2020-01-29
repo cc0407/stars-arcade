@@ -15,6 +15,7 @@ public class Main {
 	//TODO locate and fix privacy leaks
 	//TODO start menu
 	//TODO move bufferedImage for skills from renderer into each skill class
+	//TODO ship doesnt come back after resurrect
 
 	public Frame f;
 	public World world;
@@ -33,6 +34,7 @@ public class Main {
 		f = new Frame(this, screenSize);
 		
 		f.initGame();
+//		f.initMenu();
 	}
 
 	public void run() {

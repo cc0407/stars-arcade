@@ -129,8 +129,8 @@ public class Ship {
 	public void resurrect() {
 		alive = true;
 		health = 100;
-		hitbox.x = m.f.WIDTH;
-		hitbox.y = m.f.HEIGHT/2;
+		hitbox.x = m.f.WIDTH - getWidth();
+		hitbox.y = (m.f.HEIGHT - getHeight())/2;
 		m.t.healthShow = false;
 		m.world.reset();
 
@@ -175,9 +175,6 @@ public class Ship {
 		
 		if(getY() + dy + getHeight() < m.f.jp.percentY(94) && getY() + dy >= 0)
 			hitbox.y += dy;
-		
-		
-		
 	}
 	
 	public void increaseSpeed(double percentAsDecimal) {
@@ -191,17 +188,9 @@ public class Ship {
 	public int getX() {
 		return hitbox.x;
 	}
-	
-	public void setX(int val) {
-		this.hitbox.x = val;
-	}
 
 	public int getY() {
 		return hitbox.y;
-	}
-	
-	public void setY(int val) {
-		this.hitbox.x = val;
 	}
 	
 	public int getWidth() {
@@ -244,14 +233,26 @@ public class Ship {
 	
 	public void advanceSkills() {
 		for(int i = 0; i < skills.length; i++) {
-			
 			if(skills[i].decreaseTick() == 0) {
 				if(skills[i].getPath().contains("boost"))
 					revertSpeed();
 				if(skills[i].getPath().contains("mega"))
 					removeMega();
 			}
+		}
+	}
+	
+	//THIS IS WHERE THE SKILL ACTUALLY DOES SOMETHING TO THE GAME
+	public void startSkill(int index) {
+		if(skills[index].start()) {
 			
+			String name = skills[index].getName();
+			if(name.equals("mega"))
+				fire(1920, 500, 0, true);
+			else if(name.equals("boost"))
+				increaseSpeed(1.5);
+			else if(name.equals("mine"))
+				fire(200, 200, 0, false);
 		}
 	}
 	
