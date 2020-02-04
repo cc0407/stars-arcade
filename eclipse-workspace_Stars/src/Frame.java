@@ -13,7 +13,7 @@ public class Frame {
 	public MenuPanel mp;
 	public JFrame jf = new JFrame("Space");
 	public Main m;
-	public boolean paused = true;
+	public boolean paused = false;
 	
 	public Frame(Main m) {
 		this(m, new Dimension(1920,1080));
@@ -31,29 +31,37 @@ public class Frame {
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.setAlwaysOnTop(true);
+		jf.setAlwaysOnTop(false);
 		jf.getContentPane().setLayout(null);
 		
 		jp = new Renderer(m, WIDTH, HEIGHT);     
-		
-		mp = new MenuPanel(m);
-		mp.setLayout(new BoxLayout(mp, BoxLayout.Y_AXIS));
-		mp.setFocusable(true);
-		mp.setSize(WIDTH, HEIGHT);
-		mp.setVisible(true);
+		mp = new MenuPanel(m, WIDTH, HEIGHT);
+
 	}
 	
 	public void initMenu() {
 		m.ship = new Ship(m);
+		m.ship.alive = false;
+		m.world = new World(m);
+		m.t = new Tick(m);
+		jf.add(jp);
+		jp.setVisible(false);
+		
 		jf.add(mp);
 		jf.requestFocus();
 		jf.setVisible(true);
+		jf.repaint();
+		//pauses actual game while menu is above it
+		togglePause();
+		m.run();
+
+
 	}
 	public void initGame() {
-		jf.add(jp);
-		m.world = new World(m);
-		m.t = new Tick(m);
-		m.run();
+		jp.setVisible(true);
+		m.ship.resurrect();
+		jf.remove(mp);
+		togglePause();
 	}
 	
 	
@@ -70,5 +78,6 @@ public class Frame {
 			return false;
 		}
 	}
+
 
 }

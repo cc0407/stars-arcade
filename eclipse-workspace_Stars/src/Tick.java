@@ -49,14 +49,13 @@ public class Tick {
 				
 			}
 			
-
 			m.world.updateBackground();
 			m.ship.advanceSkills();
 			m.ship.updateMissiles();
 			m.world.updateMeteors();
-			m.world.col.Check();
-			frame.jp.repaint();
+			m.world.col.Check();		
 			
 		}
+		frame.jf.repaint();
 	}
 }

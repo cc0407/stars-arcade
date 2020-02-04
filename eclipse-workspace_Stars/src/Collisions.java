@@ -31,6 +31,7 @@ public class Collisions {
 					}
 					catch(IndexOutOfBoundsException g)
 					{
+						g.printStackTrace();
 					}
 				}
 			}

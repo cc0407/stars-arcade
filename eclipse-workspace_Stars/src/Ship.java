@@ -54,7 +54,6 @@ public class Ship {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		startingAnim();
 	}
 	
 	//Use this to increase or decrease health

@@ -19,24 +19,23 @@ public class World {
 	// 5 = opacity
 
 	public Main m;
-	public Frame frame;
 	public Collisions col;
 
 	
 	public World(Main m) {
 		this.m = m;
-		this.frame = m.f;
 		this.col = new Collisions(m);
 		
 		for (int i = 0; i < 600; i++) {
 			particles[particleCount][0] = 14 * rand.nextInt(5);
 			particles[particleCount][1] = 2 * rand.nextInt(4);
-			particles[particleCount][2] = rand.nextInt(1000) + frame.WIDTH;
-			particles[particleCount][3] = rand.nextInt(frame.HEIGHT);
+			particles[particleCount][2] = rand.nextInt(1000) + m.f.WIDTH;
+			particles[particleCount][3] = rand.nextInt(m.f.HEIGHT);
 			particles[particleCount][4] = rand.nextInt(19) + 1;
 			particles[particleCount][5] = rand.nextInt(50) + 100;
 			particleCount++;
 		}
+
 	}
 	
 	public void setScore(int score) {
@@ -63,12 +62,12 @@ public class World {
 	public void spawnMeteor() {
 		for(int i = 0; i < spawnAmt; i ++)
 		{
-			x = rand.nextInt(2000) + frame.WIDTH;
-			y =  rand.nextInt(frame.HEIGHT/2);
-			meteors.add(new Meteor(x, y, frame.jp.percentY(6), frame.jp.percentY(6), frame.jp.percentY(0.2)));
+			x = rand.nextInt(2000) + m.f.WIDTH;
+			y =  rand.nextInt(m.f.HEIGHT/2);
+			meteors.add(new Meteor(x, y, m.f.jp.percentY(6), m.f.jp.percentY(6), m.f.jp.percentY(0.2)));
 			
-			y =  rand.nextInt(frame.HEIGHT/2) + frame.HEIGHT/2 - 160;
-			meteors.add(new Meteor(x, y, frame.jp.percentY(6), frame.jp.percentY(6), frame.jp.percentY(0.2)));
+			y =  rand.nextInt(m.f.HEIGHT/2) + m.f.HEIGHT/2 - 160;
+			meteors.add(new Meteor(x, y, m.f.jp.percentY(6), m.f.jp.percentY(6), m.f.jp.percentY(0.2)));
 		}
 	}
 	
@@ -104,12 +103,12 @@ public class World {
 			if (particles[i][2] < -100) {
 
 				if (i <= 400) {
-					particles[i][2] = rand.nextInt(500) + frame.WIDTH;
-					particles[i][3] = rand.nextInt(frame.HEIGHT);
+					particles[i][2] = rand.nextInt(500) + m.f.WIDTH;
+					particles[i][3] = rand.nextInt(m.f.HEIGHT);
 					particles[i][4] = rand.nextInt(10)+1;
 				} else {
-					particles[i][2] = rand.nextInt(1000) + frame.WIDTH;
-					particles[i][3] = rand.nextInt(frame.HEIGHT);
+					particles[i][2] = rand.nextInt(1000) + m.f.WIDTH;
+					particles[i][3] = rand.nextInt(m.f.HEIGHT);
 					particles[i][4] = rand.nextInt(10) + 11;
 				}
 			}

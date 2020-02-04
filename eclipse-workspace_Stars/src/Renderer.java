@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class Renderer extends JPanel {
@@ -26,6 +27,7 @@ public class Renderer extends JPanel {
 	private BufferedImage meteorImg;
 	private BufferedImage toolbarImg;
 	private Missile mega;
+	private JButton menu = new JButton("MAIN MENU");
 	//private int[] xComp = {m.ship.hitbox.x + 100,m.ship.hitbox.x -27, m.ship.hitbox.x + 50, m.ship.hitbox.x, m.ship.hitbox.x + 50,  m.ship.hitbox.x - 27,  m.ship.hitbox.x +100,  m.ship.hitbox.x + 100},
 	//		yComp = {m.ship.hitbox.y +280,  m.ship.hitbox.y - 27,  m.ship.hitbox.y - 13,  m.ship.hitbox.y,  m.ship.hitbox.y + 13,  m.ship.hitbox.y + 27,  m.ship.hitbox.y - 220,  m.ship.hitbox.y + 280};
 	
@@ -33,11 +35,14 @@ public class Renderer extends JPanel {
 	
 	public Renderer(Main m, int width, int height) {
 		this.m = m;
-		this.addKeyListener(new Keybinds(m));
+		keybinds = new Keybinds(m);
+		this.addKeyListener(keybinds);
 		this.setFocusable(true);
 		this.setBackground(Color.BLACK);
 		this.setSize(width, height);
 		this.setVisible(true);
+		menu.setBounds(percentX(90) / 2, percentY(80), percentX(10), percentY(5));
+		menu.setVisible(false);
 		
 		try {
 			meteorImg = ImageIO.read(new File("res\\Asteroid.png"));
@@ -93,7 +98,9 @@ public class Renderer extends JPanel {
 				try {
 				mega = m.ship.getMega();
 				g.fillRect(mega.getX(), mega.getY(), mega.getWidth(), mega.getHeight());
-				}catch(NullPointerException ignored) {}
+				}catch(NullPointerException ignored) {
+					ignored.printStackTrace();
+				}
 				
 			}
 			
@@ -160,8 +167,6 @@ public class Renderer extends JPanel {
 					}
 				}
 				
-				////////////
-				//vert Line 3
 				
 				
 				//Progress Bar
@@ -202,6 +207,7 @@ public class Renderer extends JPanel {
 				g.setFont(new Font("Monospaced", Font.PLAIN, percentY(2.5)));
 				fontMetrics = g.getFontMetrics();
 				g.drawString("Press 'Space' to continue", (this.getWidth() - fontMetrics.stringWidth("Press 'Space' to continue"))/2 , (this.getHeight() - percentY(2.5))/2 + 30);
+				menu.setVisible(true);
 			}
 			
 			/////////////////////////////////////////////////////
@@ -214,6 +220,7 @@ public class Renderer extends JPanel {
 				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 				g.setColor(Color.WHITE);
 				g.drawString("PAUSED", (this.getWidth() - fontMetrics.stringWidth("PAUSED"))/2, (this.getHeight() - percentY(5))/2);
+				menu.setVisible(true);
 			}
 		}
 	}

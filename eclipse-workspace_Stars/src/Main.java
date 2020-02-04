@@ -16,7 +16,6 @@ public class Main {
 	//TODO start menu
 	//TODO move bufferedImage for skills from renderer into each skill class
 	//TODO ship doesnt come back after resurrect
-
 	public Frame f;
 	public World world;
 	public Ship ship;
@@ -33,14 +32,14 @@ public class Main {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		f = new Frame(this, screenSize);
 		
-		f.initGame();
-//		f.initMenu();
+//		f.initGame();
+//		Commented out while developing, will swap to it once finished
+		f.initMenu();
 	}
 
 	public void run() {
 		run = true;
-		f.paused = false;
-		f.jf.setVisible(true);
+//		f.jf.setVisible(true);
 		long lastTime = System.nanoTime();
 		final double amountOfTicks = 60D;
 		double ns = 1000000000 / amountOfTicks;
