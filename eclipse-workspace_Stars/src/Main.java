@@ -22,7 +22,6 @@ public class Main {
 	public Tick t;
 	public Events events;
 	public boolean run;
-
 	public boolean running = true;
 
 	public static void main(String[] args) {
@@ -31,6 +30,7 @@ public class Main {
 	
 	public Main() {
 		events = new Events(this);
+		Skill.initSkills();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		f = new Frame(this, screenSize);
 		

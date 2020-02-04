@@ -2,6 +2,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JLabel;
 
 public class Events{
 	private Main m;
@@ -10,6 +13,7 @@ public class Events{
 	public final ActionListener restart;
 	public final ActionListener backtoMenu;
 	public final ActionListener openEquip;
+	public final MouseListener equipmentSelect;
 	public Events(Main m) {
 		this.m = m;
 		
@@ -48,6 +52,23 @@ public class Events{
 		    }
 		};
 		
+		equipmentSelect = new MouseListener() {
+		    @Override
+		    public void mousePressed(MouseEvent e) {
+		    	String text = ((JLabel) e.getComponent()).getText();
+		    	m.ship.swapSkill(text, m.f.ep.getEquipSlot());
+		    	m.f.repaint();
+		    }
+		    
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+		};
 		
 		
 	}

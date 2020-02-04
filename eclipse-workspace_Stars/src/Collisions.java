@@ -15,7 +15,7 @@ public class Collisions {
 		
 		for(Missile missile : ms) {
 			for(Meteor mm : mt) {
-				if(Skill.MEGA.isActive() && missile.hitbox.intersects(mm.hitbox) && missile.isFollowing())
+				if(Skill.get("MEGA").isActive() && missile.hitbox.intersects(mm.hitbox) && missile.isFollowing())
 				{
 					m.world.removeMeteor(mm);
 					m.world.increaseScore(100);
@@ -43,7 +43,7 @@ public class Collisions {
 				{
 					m.world.removeMeteor(mm);
 					
-					if(!Skill.SHIELD.isActive())
+					if(!Skill.get("SHIELD").isActive())
 						m.ship.changeHealth(-10);
 					else
 						m.world.increaseScore(100);

@@ -17,7 +17,7 @@ public class Ship {
 
 	public boolean isFiring = false;
 	public boolean alive = true;
-	public Skill[] skills = {Skill.SHIELD, Skill.MULTI, Skill.BOOST, Skill.MEGA};
+	public Skill[] skills = {Skill.get("SHIELD"), Skill.get("MULTI"), Skill.get("BOOST"), Skill.get("MEGA")};
 	private int dy;
 	private int dx;
 	private int health = 100;
@@ -153,7 +153,7 @@ public class Ship {
 		//sets x value at right side of ship, centers y value on nose of ship, width of missile, height of missile, speed of missile, plays sound true
 		missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, missileWidth, missileHeight, missileSpeed, true));
 		
-		if(Skill.MULTI.isActive()) {
+		if(Skill.get("MULTI").isActive()) {
 			//sets x value in front of wing guns, sets y value at end of wing guns, width of missile, height of missile, speed of missile, plays sound false
 			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 1/10), missileWidth, missileHeight, missileSpeed, false));
 			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 9/10), missileWidth, missileHeight, missileSpeed, false));
@@ -239,6 +239,16 @@ public class Ship {
 					removeMega();
 			}
 		}
+	}
+	
+	public void swapSkill(String key, int slot) {
+		for(Skill s : this.skills) {
+			if(s.getName().equalsIgnoreCase(key)) {
+				return;
+			}
+		}
+		skills[slot] = Skill.get(key);
+		m.f.ep.nextEquip();
 	}
 	
 	//THIS IS WHERE THE SKILL ACTUALLY DOES SOMETHING TO THE GAME

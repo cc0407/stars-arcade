@@ -31,7 +31,7 @@ public class Tick {
 			
 			m.ship.move();
 			
-			if (m.ship.isFiring && !Skill.MEGA.isActive()) {
+			if (m.ship.isFiring && !Skill.get("MEGA").isActive()) {
 				if (fireCooldown <= 0) {
 					fireCooldown = 15;
 					m.ship.fire();

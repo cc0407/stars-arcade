@@ -86,14 +86,14 @@ public class Renderer extends JPanel {
 			}
 			
 			//m.ship.skill1
-			if(Skill.SHIELD.isActive())
+			if(Skill.get("SHIELD").isActive())
 			{
 				g.setColor(new Color(0,0,255,100));
 				g.fillOval(m.ship.getX() - percentY(2), m.ship.getY() - percentY(2), m.ship.getWidth() + percentY(3.7), m.ship.getHeight() + percentY(3.7));
 			}
 			
 			//mega
-			if(Skill.MEGA.isActive())
+			if(Skill.get("MEGA").isActive())
 			{
 				shipX = m.ship.getX();
 				shipY = m.ship.getY();

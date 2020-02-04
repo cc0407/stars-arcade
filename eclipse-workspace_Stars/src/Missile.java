@@ -62,6 +62,6 @@ public class Missile {
 	}
 
 	public boolean isFollowing() {
-		return !this.s.equals(null);
+		return this.s != null;
 	}
 }

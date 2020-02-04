@@ -1,14 +1,14 @@
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.imageio.ImageIO;
 
 public class Skill {
-	public static final Skill SHIELD = new Skill(300, 600, "res\\Shield");
-	public static final Skill MULTI = new Skill(600, 1200, "res\\Multi");
-	public static final Skill BOOST = new Skill(600, 1200, "res\\Boost");
-	public static final Skill MEGA = new Skill(300, 3200, "res\\Mega");
+	public static final LinkedHashMap<String, Skill> skills = new LinkedHashMap<String, Skill>();
 	protected boolean isActive = false;
 	protected final int duration;
 	protected final int cooldown;
@@ -78,6 +78,12 @@ public class Skill {
 		return this.img;
 	}
 	
+	public Image getImg(int width, int height) {
+		Image dimg = this.getImg().getScaledInstance(width, height,
+		        Image.SCALE_SMOOTH);
+		return dimg;
+	}
+	
 	public boolean isActive() {
 		return this.isActive;
 	}
@@ -137,4 +143,26 @@ public class Skill {
 		this.isActive = false;
 	}
 	
+	public static void initSkills() {
+		skills.put("SHIELD", new Skill(300, 600, "res\\Shield"));
+		skills.put("MULTI", new Skill(600, 1200, "res\\Multi"));
+		skills.put("BOOST", new Skill(600, 1200, "res\\Boost"));
+		skills.put("MEGA", new Skill(300, 3200, "res\\Mega"));
+		
+	}
+	public static HashMap<String, Skill> getSkills() {
+		return new HashMap<String, Skill>(skills);
+	}
+	
+	public static Skill get(String key) {
+		return skills.get(key);
+	}
+	
+//	public static Skill get(int index) {
+//		return skills.values().
+//	}
+	
+	public static int amtOfSkills() {
+		return skills.size();
+	}
 }
