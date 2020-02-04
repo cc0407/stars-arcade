@@ -67,7 +67,7 @@ public class Keybinds extends JComponent implements KeyListener {
 			if (key == KeyEvent.VK_ESCAPE) {
 
 					if(!m.f.togglePause())
-					m.f.jf.repaint();
+					m.f.repaint();
 				
 			}
 			

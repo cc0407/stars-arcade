@@ -35,6 +35,7 @@ public class Renderer extends JPanel {
 	
 	public Renderer(Main m, int width, int height) {
 		this.m = m;
+		this.setLayout(null);
 		keybinds = new Keybinds(m);
 		this.addKeyListener(keybinds);
 		this.setFocusable(true);
@@ -43,6 +44,7 @@ public class Renderer extends JPanel {
 		this.setVisible(true);
 		menu.setBounds(percentX(90) / 2, percentY(80), percentX(10), percentY(5));
 		menu.setVisible(false);
+		this.add(menu);
 		
 		try {
 			meteorImg = ImageIO.read(new File("res\\Asteroid.png"));
@@ -58,6 +60,9 @@ public class Renderer extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		if(m.run) {
+			if(menu.isVisible())
+				menu.setVisible(false);
+			
 			super.paintComponent(g);
 			
 			//Background

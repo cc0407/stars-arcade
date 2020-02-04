@@ -6,12 +6,13 @@ import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
-public class Frame {
+public class Frame extends JFrame{
 	public int HEIGHT;
 	public int WIDTH;
 	public Renderer jp;
 	public MenuPanel mp;
-	public JFrame jf = new JFrame("Space");
+//	public JFrame jf = new JFrame("Space");
+	public Events events;
 	public Main m;
 	public boolean paused = false;
 	
@@ -20,19 +21,20 @@ public class Frame {
 	}
 	
 	public Frame(Main m, Dimension screen) {
+		this.setTitle("Space");
 		WIDTH = (int) screen.getWidth();
 		HEIGHT = (int) screen.getHeight();
 		this.m = m;
 
 		
-		jf.setSize(WIDTH, HEIGHT);
-		jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		jf.setUndecorated(true);
-		jf.setLocationRelativeTo(null);
-		jf.setResizable(false);
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.setAlwaysOnTop(false);
-		jf.getContentPane().setLayout(null);
+		this.setSize(WIDTH, HEIGHT);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		this.setUndecorated(true);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setAlwaysOnTop(false);
+		this.getContentPane().setLayout(null);
 		
 		jp = new Renderer(m, WIDTH, HEIGHT);     
 		mp = new MenuPanel(m, WIDTH, HEIGHT);
@@ -44,13 +46,13 @@ public class Frame {
 		m.ship.alive = false;
 		m.world = new World(m);
 		m.t = new Tick(m);
-		jf.add(jp);
+		this.add(jp);
 		jp.setVisible(false);
 		
-		jf.add(mp);
-		jf.requestFocus();
-		jf.setVisible(true);
-		jf.repaint();
+		this.add(mp);
+		this.requestFocus();
+		this.setVisible(true);
+		this.repaint();
 		//pauses actual game while menu is above it
 		togglePause();
 		m.run();
@@ -60,7 +62,7 @@ public class Frame {
 	public void initGame() {
 		jp.setVisible(true);
 		m.ship.resurrect();
-		jf.remove(mp);
+		this.remove(mp);
 		togglePause();
 	}
 	

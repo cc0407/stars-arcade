@@ -56,6 +56,6 @@ public class Tick {
 			m.world.col.Check();		
 			
 		}
-		frame.jf.repaint();
+		frame.repaint();
 	}
 }
