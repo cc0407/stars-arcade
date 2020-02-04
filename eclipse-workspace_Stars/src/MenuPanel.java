@@ -28,7 +28,6 @@ public class MenuPanel extends JPanel {
 	private Rectangle ButtonSize;
 	FontMetrics fm;
 	public MenuPanel(Main m, int WIDTH, int HEIGHT) {
-//		this(null, m);
 		this.m = m;
 		this.setBackground(Color.BLACK);
 		this.setFocusable(true);
@@ -40,31 +39,20 @@ public class MenuPanel extends JPanel {
 		play.setBounds(percentX(85) / 2, percentY(30), ButtonSize.width, ButtonSize.height);
 		this.add(play);
 		play.addMouseListener(new MouseEntered());
-		play.addActionListener(new ActionListener() {
+		play.addActionListener(m.events.play);
 
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-//		    	play.setText("test");
-		    	m.f.initGame();
-		    }
-		});
 		
 		
 		equipment.setBounds(percentX(85) / 2, percentY(50), ButtonSize.width, ButtonSize.height);
 		this.add(equipment);
 		equipment.addMouseListener(new MouseEntered());
+		equipment.addActionListener(m.events.openEquip);
 		
 		
 		quit.setBounds(percentX(85) / 2, percentY(70), ButtonSize.width, ButtonSize.height);
 		this.add(quit);
 		quit.addMouseListener(new MouseEntered());
-		quit.addActionListener(new ActionListener() {
-
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		    	System.exit(0);
-		    }
-		});
+		quit.addActionListener(m.events.quit);
 		this.repaint();
 	}
 	

@@ -20,15 +20,17 @@ public class Main {
 	public World world;
 	public Ship ship;
 	public Tick t;
+	public Events events;
 	public boolean run;
 
-	public static boolean running = true;
+	public boolean running = true;
 
 	public static void main(String[] args) {
 		new Main();
 	}
 	
 	public Main() {
+		events = new Events(this);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		f = new Frame(this, screenSize);
 		

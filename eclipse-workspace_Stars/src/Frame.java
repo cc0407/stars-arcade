@@ -11,8 +11,7 @@ public class Frame extends JFrame{
 	public int WIDTH;
 	public Renderer jp;
 	public MenuPanel mp;
-//	public JFrame jf = new JFrame("Space");
-	public Events events;
+	public EquipPanel ep;
 	public Main m;
 	public boolean paused = false;
 	
@@ -25,7 +24,6 @@ public class Frame extends JFrame{
 		WIDTH = (int) screen.getWidth();
 		HEIGHT = (int) screen.getHeight();
 		this.m = m;
-
 		
 		this.setSize(WIDTH, HEIGHT);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -38,6 +36,12 @@ public class Frame extends JFrame{
 		
 		jp = new Renderer(m, WIDTH, HEIGHT);     
 		mp = new MenuPanel(m, WIDTH, HEIGHT);
+		ep = new EquipPanel(m, WIDTH, HEIGHT);
+		this.add(jp);
+		this.add(mp);
+		this.add(ep);
+		
+
 
 	}
 	
@@ -46,23 +50,22 @@ public class Frame extends JFrame{
 		m.ship.alive = false;
 		m.world = new World(m);
 		m.t = new Tick(m);
-		this.add(jp);
-		jp.setVisible(false);
-		
-		this.add(mp);
+
+		showMain();
 		this.requestFocus();
 		this.setVisible(true);
 		this.repaint();
-		//pauses actual game while menu is above it
-		togglePause();
-		m.run();
+
+		if(!m.run)
+			m.run();
 
 
 	}
 	public void initGame() {
 		jp.setVisible(true);
 		m.ship.resurrect();
-		this.remove(mp);
+		mp.setVisible(false);
+//		this.remove(mp);
 		togglePause();
 	}
 	
@@ -79,6 +82,31 @@ public class Frame extends JFrame{
 			Sound.resumeAll();
 			return false;
 		}
+	}
+	
+	public void pause() {
+		if(!this.paused) {
+			togglePause();
+		}
+	}
+	
+	public void unpause() {
+		if(this.paused) {
+			togglePause();
+		}
+	}
+	
+	public void showMain() {
+		pause();
+		jp.setVisible(false);
+		mp.setVisible(true);
+		ep.setVisible(false);
+	}
+	
+	public void showEquip() {
+		m.f.ep.setVisible(true);
+    	m.f.mp.setVisible(false);
+    	m.f.jp.setVisible(false);
 	}
 
 

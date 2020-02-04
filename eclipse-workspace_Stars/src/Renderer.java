@@ -42,8 +42,9 @@ public class Renderer extends JPanel {
 		this.setBackground(Color.BLACK);
 		this.setSize(width, height);
 		this.setVisible(true);
-		menu.setBounds(percentX(90) / 2, percentY(80), percentX(10), percentY(5));
+		menu.setBounds(percentX(90) / 2, percentY(60), percentX(10), percentY(5));
 		menu.setVisible(false);
+		menu.addActionListener(m.events.restart);
 		this.add(menu);
 		
 		try {
