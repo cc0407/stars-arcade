@@ -13,7 +13,9 @@ public class Events{
 	public final ActionListener restart;
 	public final ActionListener backtoMenu;
 	public final ActionListener openEquip;
-	public final MouseListener equipmentSelect;
+	public final MouseListener switchSkill;
+	public final MouseListener skillSelect;
+	
 	public Events(Main m) {
 		this.m = m;
 		
@@ -52,11 +54,12 @@ public class Events{
 		    }
 		};
 		
-		equipmentSelect = new MouseListener() {
+		skillSelect = new MouseListener() {
 		    @Override
 		    public void mousePressed(MouseEvent e) {
 		    	String text = ((JLabel) e.getComponent()).getText();
-		    	m.ship.swapSkill(text, m.f.ep.getEquipSlot());
+		    	m.f.ep.switchSkillSelection(text);
+		    	
 		    	m.f.repaint();
 		    }
 		    
@@ -69,6 +72,25 @@ public class Events{
 			@Override
 			public void mouseExited(MouseEvent e) {}
 		};
+		
+		switchSkill = new MouseListener() {
+		    @Override
+		    public void mousePressed(MouseEvent e) {
+		    	String text = ((JLabel) e.getComponent()).getText();
+		    	m.ship.swapSkill(m.f.ep.getSelectedSkillName(), Integer.parseInt(text));
+		    	m.f.repaint();
+		    }
+		    
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+		};
+		
 		
 		
 	}

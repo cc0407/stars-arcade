@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.LayoutManager;
@@ -15,9 +17,16 @@ public class EquipPanel extends JPanel {
 
 	private JButton back = new JButton("back");
 	private JLabel[] skills;
-	private int equipWidth;
-	private int skillsPerRow = 3;
+	private JLabel[] equipped = {new JLabel(), new JLabel(), new JLabel(), new JLabel()};
+	private int skillWidth;
+	private int equippedWidth;
+	private int skillsPerRow = 2;
 	private int selectedSlot = 0;
+	private int selectedSkill = -1;
+	private int skillLibraryWidth;
+	private int skillLibraryHeight;
+	private FontMetrics fm;
+	
 	public EquipPanel(Main m, int WIDTH, int HEIGHT) {
 		this.m = m;
 		this.setLayout(null);
@@ -27,9 +36,58 @@ public class EquipPanel extends JPanel {
 		this.setVisible(true);
 		this.setLayout(null);
 		
-		equipWidth = percentY(10);
+		this.skillWidth = percentX(5);
+		this.equippedWidth = (int) (2 * skillWidth);
+		this.skillLibraryWidth = percentX(30);
+		this.skillLibraryHeight = percentY(55);
+		
+		
 		skills = new JLabel[Skill.amtOfSkills()];
-		back.setBounds(percentX(90) / 2, percentY(70), percentX(10), percentY(5));
+		//Creation of equipped skills
+		int count = 0;
+		int xx = percentX(37.5);
+		for(JLabel jl : equipped) {
+			jl.setVisible(true);
+			jl.addMouseListener(m.events.switchSkill);
+			jl.setBounds(xx, percentY(40), equippedWidth, equippedWidth);
+			jl.setText(String.valueOf(count));
+			this.add(jl);
+			count++;
+			xx += percentX(15);
+		}
+		
+		
+		//Creation of skill library
+		int x = percentX(5);
+		int y = percentY(10);
+		count = 0;
+		int xCount = 0;
+		
+		for(Entry<String, Skill> s : Skill.getSkills().entrySet()) {
+			if (xCount + 1 > skillsPerRow) {
+				x = percentX(5);
+				y += skillWidth + percentX(2.5);
+				xCount = 0;
+			}
+			
+			if(s.getValue().getImg() != null) {
+
+				this.skills[count] = new JLabel(new ImageIcon(s.getValue().getImg(skillWidth, skillWidth)));
+				this.skills[count].setVisible(true);
+				this.skills[count].addMouseListener(m.events.skillSelect);
+				this.skills[count].setBounds(x, y, skillWidth, skillWidth);
+				this.skills[count].setText(s.getKey());
+				this.add(this.skills[count]);
+			}			
+
+			x += skillWidth + percentX(2.5);
+
+			xCount ++;
+			count ++;
+
+		}
+
+		back.setBounds(percentX(60), percentY(80), percentX(10), percentY(7.5));
 		this.add(back);
 		back.setVisible(true);
 		back.addActionListener(m.events.backtoMenu);
@@ -41,45 +99,48 @@ public class EquipPanel extends JPanel {
 		
 		super.paintComponent(g);
 		
-		
-		
+//		g.setColor(Color.YELLOW);
+		g.setColor(Color.BLACK);
+		for(int i = 0; i < this.getWidth(); i += this.getWidth() / 10) {
+			g.drawLine(i, 0, i, this.getHeight());
+		}
+		for(int i = 0; i < this.getHeight(); i += this.getHeight() / 10) {
+			g.drawLine(0, i, this.getWidth(), i);
+		}
 		
 		
 		//background for library
 		g.setColor(new Color(100,100,100,200));
-		g.fillRect(0, 0, percentY(50), percentY(50));
+		g.fillRect(0, 0, skillLibraryWidth, skillLibraryHeight);
 		
-		//Drawing of equipment library
-		int x = percentY(10);
-		int y = percentY(10);
+		g.setColor(new Color(200,200,200,200));
+		g.fillRect(0, skillLibraryHeight, skillLibraryWidth, this.getHeight());
+			
+		
+		g.setFont(new Font("Monospaced", Font.BOLD, percentY(5)));
+		g.setColor(Color.WHITE);
+		fm = g.getFontMetrics();
+		
+		g.drawString("SKILLS", (this.skillLibraryWidth - fm.stringWidth("SKILLS")) / 2, percentY(5));
+		g.drawString("DESCRIPTION", (this.skillLibraryWidth - fm.stringWidth("DESCRIPTION")) / 2, this.skillLibraryHeight + percentY(5));
+		
+		
+		for(int i = 0; i < this.skills.length; i++) {
+			if(i == selectedSkill) {
+				int selectedOffset = percentY(0.5);
+				JLabel jl = skills[i];
+				g.setColor(Color.RED);
+				g.fillRect(jl.getX() - selectedOffset, jl.getY() - selectedOffset, jl.getWidth() + 2 * selectedOffset, jl.getHeight() + 2 * selectedOffset);
+			}
+		}
+		
 		int count = 0;
-		for(Entry<String, Skill> s : Skill.getSkills().entrySet()) {
-			if(s.getValue().getImg() != null) {
+		for(JLabel jl : equipped) {
+			jl.setIcon(new ImageIcon(m.ship.skills[count].getImg(equippedWidth, equippedWidth)));
+		count ++;
+		}
+		
 
-				this.skills[count] = new JLabel(new ImageIcon(s.getValue().getImg(equipWidth, equipWidth)));
-				this.skills[count].setVisible(true);
-				this.skills[count].addMouseListener(m.events.equipmentSelect);
-				this.skills[count].setBounds(x, y, equipWidth, equipWidth);
-				this.skills[count].setText(s.getKey());
-				this.add(this.skills[count]);
-			}
-			
-			
-			x+= equipWidth;
-			if (x >= skillsPerRow * equipWidth) {
-				x = percentY(10);
-				y += equipWidth;
-			}
-			
-		}
-		
-		
-		//drawing of equiped skills
-		int xx = 200;
-		for(Skill s : m.ship.skills) {
-			g.drawImage(s.getImg(), xx, 400, 50, 50,this);
-			xx += 50;
-		}
 	}
 
 	public int nextEquip() {
@@ -93,6 +154,18 @@ public class EquipPanel extends JPanel {
 	
 	public int getEquipSlot() {
 		return this.selectedSlot;
+	}
+	
+	public String getSelectedSkillName() {
+		return skills[selectedSkill].getText();
+	}
+	
+	public void switchSkillSelection(String selectionName) {
+		for(int i = 0; i < this.skills.length; i++) {
+			if(this.skills[i].getText() == selectionName) {
+				this.selectedSkill = i;
+			}
+		}
 	}
 
 	public int percentX(int percent) {

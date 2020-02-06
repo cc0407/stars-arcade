@@ -10,12 +10,14 @@ public class Main {
 	//TODO powerup textures
 	//TODO 6 Boss battles
 	//TODO add sounds
-	//TODO implement more powerups, refactor the 4 in renderer to pull from 4 "active skills" inside ship class
+	//TODO implement more powerups
 	//TODO refactor background particles so it doesn't use a 2D array
 	//TODO locate and fix privacy leaks
 	//TODO start menu
-	//TODO move bufferedImage for skills from renderer into each skill class
-	//TODO ship doesnt come back after resurrect
+	//TODO particles dont scale
+	
+	//TODO color is taking a lot of memory for some reason
+	//TODO Sound clips are not closing
 	public Frame f;
 	public World world;
 	public Ship ship;

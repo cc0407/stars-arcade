@@ -241,15 +241,31 @@ public class Ship {
 		}
 	}
 	
-	public void swapSkill(String key, int slot) {
+	public int swapSkill(String key, int slot) {
+		int count = 0;
 		for(Skill s : this.skills) {
 			if(s.getName().equalsIgnoreCase(key)) {
-				return;
+				if(count == slot) {
+					return -1;
+				}
+				else {
+					switchSkillWithOther(key, slot, count);
+				}
 			}
+			count++;
 		}
 		skills[slot] = Skill.get(key);
-		m.f.ep.nextEquip();
+		return 1;
 	}
+	
+	public void switchSkillWithOther(String key, int slot, int slot2) {
+		Skill tempSkill = skills[slot2];
+		
+		skills[slot2] = skills[slot];
+		skills[slot] = tempSkill;
+		
+	}
+
 	
 	//THIS IS WHERE THE SKILL ACTUALLY DOES SOMETHING TO THE GAME
 	public void startSkill(int index) {
@@ -279,6 +295,12 @@ public class Ship {
 			if(missile.isFollowing()) {
 				this.removeMissile(missile);
 			}
+		}
+	}
+	
+	public void printSkills() {
+		for(Skill s : this.skills) {
+			System.out.print(s.getName());
 		}
 	}
 }

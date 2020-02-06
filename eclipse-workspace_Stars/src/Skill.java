@@ -16,16 +16,18 @@ public class Skill {
 	protected int startingCooldown;
 	protected int ticksLeft = 0;
 	protected String path;
+	protected String description;
 	protected Sound s;
 	protected BufferedImage img;
 	
-	public Skill(int duration, int cooldown, int startingCooldown, String filename) {
+	public Skill(int duration, int cooldown, int startingCooldown, String filename, String description) {
 		this.duration = duration;
 		this.ticksLeft = duration;
 		this.cooldown = cooldown;
 		this.startingCooldown = startingCooldown;
 		this.currentCooldown = startingCooldown;
 		this.path = filename;
+		this.description = description;
 		
 		s = new Sound(filename + ".wav");
 		
@@ -34,14 +36,13 @@ public class Skill {
 			img = ImageIO.read(new File(filename + ".png"));
 		}catch(IOException e) {
 		}
-	}
-	
-	public Skill(int duration, int cooldown, String filename) {
-		this(duration, cooldown, 0, filename);
+	}	
+	public Skill(int duration, int cooldown, String filename, String description) {
+		this(duration, cooldown, 0, filename, description);
 	}
 	
 	public Skill(Skill other) {
-		this(other.getDuration(), other.getCooldown(), other.getStartingCooldown(), other.getPath());
+		this(other.getDuration(), other.getCooldown(), other.getStartingCooldown(), other.getPath(), other.getDescription());
 	}
 	
 	public void play() {
@@ -82,6 +83,14 @@ public class Skill {
 		Image dimg = this.getImg().getScaledInstance(width, height,
 		        Image.SCALE_SMOOTH);
 		return dimg;
+	}
+	
+	public void editDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return this.description;
 	}
 	
 	public boolean isActive() {
@@ -144,10 +153,11 @@ public class Skill {
 	}
 	
 	public static void initSkills() {
-		skills.put("SHIELD", new Skill(300, 600, "res\\Shield"));
-		skills.put("MULTI", new Skill(600, 1200, "res\\Multi"));
-		skills.put("BOOST", new Skill(600, 1200, "res\\Boost"));
-		skills.put("MEGA", new Skill(300, 3200, "res\\Mega"));
+		skills.put("SHIELD", new Skill(300, 600, "res\\Shield", "Forcefield that protects the ship from damage."));
+		skills.put("MULTI", new Skill(600, 1200, "res\\Multi", "New guns open on each wing, allowing the ship to shoot three missiles instead of one."));
+		skills.put("BOOST", new Skill(600, 1200, "res\\Boost", "Activates afterburners, increasing ships speed 1.5x."));
+		skills.put("MEGA", new Skill(300, 3200, "res\\Mega", "Charges flux capacitors, allowing for huge release of energy in the form of a mega beam."));
+		skills.put("MINE", new Skill(1, 1200, "res\\Mine", "Creates an energy mine that stays in place. Can be hit 3 times before breaking, part of the energy is used up in this process."));
 		
 	}
 	public static HashMap<String, Skill> getSkills() {

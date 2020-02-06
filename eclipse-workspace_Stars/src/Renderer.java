@@ -72,6 +72,18 @@ public class Renderer extends JPanel {
 				g.fillRect(m.world.particles[i][2], m.world.particles[i][3], m.world.particles[i][0],
 						m.world.particles[i][1]);
 			}
+			
+			
+			//Missiles
+			for (Missile m : m.ship.getMissiles()) {
+				g.setColor(Color.RED);
+				g.fillRect(m.getX(), m.getY(), m.hitbox.width, m.hitbox.height);
+				
+				if(showBoxes) {
+					g.setColor(Color.BLUE);
+					g.drawRect(m.hitbox.x, m.hitbox.y, m.hitbox.width, m.hitbox.height);
+				}
+			}
 	
 			//ship
 			if(m.ship.alive)
@@ -110,17 +122,7 @@ public class Renderer extends JPanel {
 				
 			}
 			
-			
-			//Missiles
-			for (Missile m : m.ship.getMissiles()) {
-				g.setColor(Color.RED);
-				g.fillRect(m.getX(), m.getY(), m.hitbox.width, m.hitbox.height);
-				
-				if(showBoxes) {
-					g.setColor(Color.BLUE);
-					g.drawRect(m.hitbox.x, m.hitbox.y, m.hitbox.width, m.hitbox.height);
-				}
-			}
+
 			
 			//Meteors
 			for (Meteor m : m.world.getMeteors()) {

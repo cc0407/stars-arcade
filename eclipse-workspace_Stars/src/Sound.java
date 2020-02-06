@@ -61,12 +61,14 @@ public class Sound {
 	public void stop() {
 		try {
 			if(this.playing != 0) {
+				
 				clipTime = 0;
 				clip.stop();
 				sounds.remove(this);
 				
 				//for garbage collection, clip.close() caused random freezing
 				clip = null;
+				clip.close();
 				
 				this.playing = 0;
 
