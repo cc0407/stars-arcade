@@ -25,6 +25,7 @@ public class Main {
 	public Events events;
 	public boolean run;
 	public boolean running = true;
+	public final double amountOfTicks = 60D;
 
 	public static void main(String[] args) {
 		new Main();
@@ -45,7 +46,6 @@ public class Main {
 		run = true;
 //		f.jf.setVisible(true);
 		long lastTime = System.nanoTime();
-		final double amountOfTicks = 60D;
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 

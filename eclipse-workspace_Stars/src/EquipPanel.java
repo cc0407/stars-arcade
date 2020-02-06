@@ -2,14 +2,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.LayoutManager;
 import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class EquipPanel extends JPanel {
 
@@ -18,13 +17,16 @@ public class EquipPanel extends JPanel {
 	private JButton back = new JButton("back");
 	private JLabel[] skills;
 	private JLabel[] equipped = {new JLabel(), new JLabel(), new JLabel(), new JLabel()};
+	private JTextArea descArea = new JTextArea();
+	private JTextArea skillDetailArea = new JTextArea();
 	private int skillWidth;
 	private int equippedWidth;
-	private int skillsPerRow = 2;
+	private int skillsPerRow = 3;
 	private int selectedSlot = 0;
 	private int selectedSkill = -1;
 	private int skillLibraryWidth;
 	private int skillLibraryHeight;
+	private String currentDescription = "";
 	private FontMetrics fm;
 	
 	public EquipPanel(Main m, int WIDTH, int HEIGHT) {
@@ -91,6 +93,24 @@ public class EquipPanel extends JPanel {
 		this.add(back);
 		back.setVisible(true);
 		back.addActionListener(m.events.backtoMenu);
+		
+		descArea.setBounds(0, this.skillLibraryHeight + percentY(7.5), this.skillLibraryWidth, this.getHeight() - this.skillLibraryHeight - percentY(27.5));
+		this.add(descArea);
+		descArea.setEditable(false);
+		descArea.setBackground(new Color(0,0,0,0));
+		descArea.setLineWrap(true);
+		descArea.setWrapStyleWord(true);
+		descArea.setFont(new Font("Monospaced", Font.BOLD, percentY(2)));
+		descArea.setForeground(Color.WHITE);
+		
+		skillDetailArea.setBounds(0, percentY(80), this.skillLibraryWidth, percentY(20));
+		this.add(skillDetailArea);
+		skillDetailArea.setEditable(false);
+		skillDetailArea.setBackground(new Color(0,0,0,0));
+		skillDetailArea.setLineWrap(true);
+		skillDetailArea.setWrapStyleWord(true);
+		skillDetailArea.setFont(new Font("Monospaced", Font.BOLD, percentY(2)));
+		skillDetailArea.setForeground(Color.WHITE);
 		this.repaint();
 	}
 	
@@ -113,18 +133,24 @@ public class EquipPanel extends JPanel {
 		g.setColor(new Color(100,100,100,200));
 		g.fillRect(0, 0, skillLibraryWidth, skillLibraryHeight);
 		
+		//background for description
 		g.setColor(new Color(200,200,200,200));
 		g.fillRect(0, skillLibraryHeight, skillLibraryWidth, this.getHeight());
 			
 		
+		//draws titles
 		g.setFont(new Font("Monospaced", Font.BOLD, percentY(5)));
 		g.setColor(Color.WHITE);
 		fm = g.getFontMetrics();
 		
 		g.drawString("SKILLS", (this.skillLibraryWidth - fm.stringWidth("SKILLS")) / 2, percentY(5));
-		g.drawString("DESCRIPTION", (this.skillLibraryWidth - fm.stringWidth("DESCRIPTION")) / 2, this.skillLibraryHeight + percentY(5));
 		
+		if(!this.hasASelection())
+			g.drawString("DESCRIPTION", (this.skillLibraryWidth - fm.stringWidth("DESCRIPTION")) / 2, this.skillLibraryHeight + percentY(5));
+		else
+			g.drawString(getSelectedSkillName(), (this.skillLibraryWidth - fm.stringWidth(getSelectedSkillName())) / 2, this.skillLibraryHeight + percentY(5));
 		
+		//Draws red selection rectangle on skill library
 		for(int i = 0; i < this.skills.length; i++) {
 			if(i == selectedSkill) {
 				int selectedOffset = percentX(0.25);
@@ -134,6 +160,7 @@ public class EquipPanel extends JPanel {
 			}
 		}
 		
+		//sets new icon for equipped skills
 		int count = 0;
 		for(JLabel jl : equipped) {
 			jl.setIcon(new ImageIcon(m.ship.skills[count].getImg(equippedWidth, equippedWidth)));
@@ -142,22 +169,28 @@ public class EquipPanel extends JPanel {
 		
 
 	}
-
-	public int nextEquip() {
-		int oldSlot = this.selectedSlot;
-		this.selectedSlot++;
-		if(this.selectedSlot >= 4) {
-			this.selectedSlot = 0;
-		}
-		return oldSlot;
-	}
 	
-	public int getEquipSlot() {
-		return this.selectedSlot;
-	}
 	
 	public String getSelectedSkillName() {
-		return skills[selectedSkill].getName();
+			return skills[selectedSkill].getName();
+	}
+	
+	public void setSelectedSkillDescription(String name) {
+		Skill s = Skill.skills.get(name);
+		this.currentDescription = s.getDescription();
+		this.descArea.setText(this.currentDescription);
+		this.skillDetailArea.setText("Duration: " + s.getDurationInSeconds(m) + " sec\n" + "Cooldown: " + s.getCooldownInSeconds(m) + " sec");
+		if(s.getStartingCooldown() != 0) {
+			this.skillDetailArea.append("\nCharge-Up: " + + s.getStartingCooldownInSeconds(m) + " sec");
+		}
+	}
+	
+	public boolean hasASelection() {
+		boolean hasSelection = true;
+		if(this.selectedSkill == -1) {
+			hasSelection = false;
+		}
+		return hasSelection;
 	}
 	
 	public void switchSkillSelection(String selectionName) {
@@ -166,6 +199,7 @@ public class EquipPanel extends JPanel {
 				this.selectedSkill = i;
 			}
 		}
+		setSelectedSkillDescription(selectionName);
 	}
 
 	public int percentX(int percent) {

@@ -54,8 +54,17 @@ public class Skill {
 	public int getDuration() {
 		return this.duration;
 	}
+	
+	public int getDurationInSeconds(Main m) {
+		return (int) (this.duration / m.amountOfTicks);
+	}
+	
 	public int getCooldown() {
 		return this.cooldown;
+	}
+	
+	public int getCooldownInSeconds(Main m) {
+		return (int) (this.cooldown / m.amountOfTicks);
 	}
 	
 	public int getCurrentCooldown() {
@@ -64,6 +73,10 @@ public class Skill {
 	
 	public int getStartingCooldown() {
 		return this.startingCooldown;
+	}
+	
+	public int getStartingCooldownInSeconds(Main m) {
+		return (int) (this.startingCooldown / m.amountOfTicks);
 	}
 	
 	public String getPath() {
@@ -156,7 +169,7 @@ public class Skill {
 		skills.put("SHIELD", new Skill(300, 600, "res\\Shield", "Forcefield that protects the ship from damage."));
 		skills.put("MULTI", new Skill(600, 1200, "res\\Multi", "New guns open on each wing, allowing the ship to shoot three missiles instead of one."));
 		skills.put("BOOST", new Skill(600, 1200, "res\\Boost", "Activates afterburners, increasing ships speed 1.5x."));
-		skills.put("MEGA", new Skill(300, 3200, "res\\Mega", "Charges flux capacitors, allowing for huge release of energy in the form of a mega beam."));
+		skills.put("MEGA", new Skill(300, 3000, 1200, "res\\Mega", "Charges flux capacitors, allowing for huge release of energy in the form of a mega beam. Due to this, it takes time to charge up."));
 		skills.put("MINE", new Skill(1, 1200, "res\\Mine", "Creates an energy mine that stays in place. Can be hit 3 times before breaking, part of the energy is used up in this process."));
 		
 	}
@@ -167,10 +180,6 @@ public class Skill {
 	public static Skill get(String key) {
 		return skills.get(key);
 	}
-	
-//	public static Skill get(int index) {
-//		return skills.values().
-//	}
 	
 	public static int amtOfSkills() {
 		return skills.size();

@@ -21,9 +21,9 @@ public class MenuPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 2050943726124305477L;
 	private Main m;
-	private JButton play = new JButton("play");
-	private JButton equipment = new JButton("equipment");
-	private JButton quit = new JButton("quit");
+	private JButton play = new JButton("PLAY");
+	private JButton skills = new JButton("SKILLS");
+	private JButton quit = new JButton("QUIT");
 	private int currentSelectionY = -100;
 	private Rectangle ButtonSize;
 	FontMetrics fm;
@@ -43,10 +43,10 @@ public class MenuPanel extends JPanel {
 
 		
 		
-		equipment.setBounds(percentX(85) / 2, percentY(50), ButtonSize.width, ButtonSize.height);
-		this.add(equipment);
-		equipment.addMouseListener(new MouseEntered());
-		equipment.addActionListener(m.events.openEquip);
+		skills.setBounds(percentX(85) / 2, percentY(50), ButtonSize.width, ButtonSize.height);
+		this.add(skills);
+		skills.addMouseListener(new MouseEntered());
+		skills.addActionListener(m.events.openEquip);
 		
 		
 		quit.setBounds(percentX(85) / 2, percentY(70), ButtonSize.width, ButtonSize.height);
