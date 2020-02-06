@@ -23,11 +23,15 @@ public class Collisions {
 				}
 				else if(missile.hitbox.intersects(mm.hitbox))
 				{
+
 					try
 					{
 						m.ship.removeMissile(missile);
 						m.world.removeMeteor(mm);
 						m.world.increaseScore(100);
+						if(missile.getType().equals(type.mine)) {
+							m.ship.newMine(missile.getWidth() / 2, missile.getHeight() / 2, missile.getX(), missile.getY());
+						}
 					}
 					catch(IndexOutOfBoundsException g)
 					{

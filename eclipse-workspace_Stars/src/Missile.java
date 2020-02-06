@@ -1,19 +1,26 @@
 import java.awt.Rectangle;
 
+enum type{
+	missile,
+	mega,
+	mine;
+}
 public class Missile {
 	private Sound missileSound = new Sound("res\\pew2.wav");
 	private final int MISSILE_SPEED;
 	private final boolean hasSound;
 	public Rectangle hitbox;
 	private Ship s = null;
+	private type t;
 	
 	//w=50, h =5
-	public Missile(int x, int y, int width, int height, int speed, boolean hasSound) {
-		this(null, x, y, width, height, speed, hasSound);
+	public Missile(int x, int y, int width, int height, int speed, boolean hasSound, type t) {
+		this(null, x, y, width, height, speed, hasSound, t);
 	}
 	
-	public Missile(Ship s, int x, int y, int width, int height, int speed, boolean hasSound) {
+	public Missile(Ship s, int x, int y, int width, int height, int speed, boolean hasSound, type t) {
 		this.s = s;
+		this.t = t;
 		hitbox = new Rectangle(x, y, width , height);
 		MISSILE_SPEED = speed;
 		this.hasSound = hasSound;
@@ -45,6 +52,10 @@ public class Missile {
 
 	public int getHeight() {
 		return hitbox.height;
+	}
+	
+	public type getType() {
+		return this.t;
 	}
 	
 	public void pauseSound() {

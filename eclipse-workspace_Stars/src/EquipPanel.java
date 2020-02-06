@@ -93,8 +93,9 @@ public class EquipPanel extends JPanel {
 		this.add(back);
 		back.setVisible(true);
 		back.addActionListener(m.events.backtoMenu);
+		back.setFont(new Font("Monospaced", Font.BOLD, percentY(2)));
 		
-		descArea.setBounds(0, this.skillLibraryHeight + percentY(7.5), this.skillLibraryWidth, this.getHeight() - this.skillLibraryHeight - percentY(27.5));
+		descArea.setBounds(percentX(1), this.skillLibraryHeight + percentY(7.5), this.skillLibraryWidth - percentX(2), this.getHeight() - this.skillLibraryHeight - percentY(27.5));
 		this.add(descArea);
 		descArea.setEditable(false);
 		descArea.setBackground(new Color(0,0,0,0));
@@ -103,7 +104,7 @@ public class EquipPanel extends JPanel {
 		descArea.setFont(new Font("Monospaced", Font.BOLD, percentY(2)));
 		descArea.setForeground(Color.WHITE);
 		
-		skillDetailArea.setBounds(0, percentY(80), this.skillLibraryWidth, percentY(20));
+		skillDetailArea.setBounds(percentX(1), percentY(80), this.skillLibraryWidth - percentX(2), percentY(20));
 		this.add(skillDetailArea);
 		skillDetailArea.setEditable(false);
 		skillDetailArea.setBackground(new Color(0,0,0,0));

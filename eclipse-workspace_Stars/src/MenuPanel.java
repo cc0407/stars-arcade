@@ -40,19 +40,21 @@ public class MenuPanel extends JPanel {
 		this.add(play);
 		play.addMouseListener(new MouseEntered());
 		play.addActionListener(m.events.play);
-
+		play.setFont(new Font("Monospaced", Font.BOLD, percentY(2)));
 		
 		
 		skills.setBounds(percentX(85) / 2, percentY(50), ButtonSize.width, ButtonSize.height);
 		this.add(skills);
 		skills.addMouseListener(new MouseEntered());
 		skills.addActionListener(m.events.openEquip);
+		skills.setFont(new Font("Monospaced", Font.BOLD, percentY(2)));
 		
 		
 		quit.setBounds(percentX(85) / 2, percentY(70), ButtonSize.width, ButtonSize.height);
 		this.add(quit);
 		quit.addMouseListener(new MouseEntered());
 		quit.addActionListener(m.events.quit);
+		quit.setFont(new Font("Monospaced", Font.BOLD, percentY(2)));
 		this.repaint();
 	}
 	

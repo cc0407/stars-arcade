@@ -1,7 +1,11 @@
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,13 +21,14 @@ public class Ship {
 
 	public boolean isFiring = false;
 	public boolean alive = true;
-	public Skill[] skills = {Skill.get("SHIELD"), Skill.get("MULTI"), Skill.get("BOOST"), Skill.get("MEGA")};
+	public Skill[] skills = new Skill[4];
 	private int dy;
 	private int dx;
 	private int health = 100;
 	private int maxHealth = 100;
 	private int speed;
 	private int currentSpeed;
+	private int mineSize;
 	private BufferedImage image;
 	private Rectangle hitbox;
 	private ArrayList<Missile> missiles;
@@ -37,12 +42,14 @@ public class Ship {
 	public Ship(Main m) {
 		this.m = m;
 		
+		initSkillsFromFile();
 		
 		missiles = new ArrayList<Missile>();
 		
 		missileHeight = m.f.jp.percentY(0.5);
 		missileWidth = m.f.jp.percentY(4.5);
 		missileSpeed = m.f.jp.percentY(1.4);
+		mineSize = m.f.jp.percentY(18.5);
 		this.speed = m.f.jp.percentY(1);
 		this.currentSpeed = this.speed;
 		
@@ -151,21 +158,29 @@ public class Ship {
 	public void fire() {
 
 		//sets x value at right side of ship, centers y value on nose of ship, width of missile, height of missile, speed of missile, plays sound true
-		missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, missileWidth, missileHeight, missileSpeed, true));
+		missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, missileWidth, missileHeight, missileSpeed, true, type.missile));
 		
 		if(Skill.get("MULTI").isActive()) {
 			//sets x value in front of wing guns, sets y value at end of wing guns, width of missile, height of missile, speed of missile, plays sound false
-			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 1/10), missileWidth, missileHeight, missileSpeed, false));
-			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 9/10), missileWidth, missileHeight, missileSpeed, false));
+			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 1/10), missileWidth, missileHeight, missileSpeed, false, type.missile));
+			missiles.add(new Missile(getX() + (getWidth() * 6 / 10), getY() + (getHeight() * 9/10), missileWidth, missileHeight, missileSpeed, false, type.missile));
 		}
 	}
 	
 	//for use with 'skill' missiles ie mega
 	public void fire(int width, int height, int speed, boolean follows) {
 		if(follows)
-			missiles.add(new Missile(this, getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, width, height, speed, false));
+			missiles.add(new Missile(this, getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, width, height, speed, false, type.mega));
 		else
-			missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, width, height, speed, false));
+			missiles.add(new Missile(getX() + getWidth(), getY() + (getHeight() - missileHeight)/ 2, width, height, speed, false, type.mine));
+	}
+	
+	//for recreating missiles
+	public void fire(int width, int height, int x, int y, int speed, boolean follows) {
+		if(follows)
+			missiles.add(new Missile(this, x, y, width, height, speed, false, type.mega));
+		else
+			missiles.add(new Missile(x, y, width, height, speed, false, type.mine));
 	}
 
 	public void move() {
@@ -230,6 +245,41 @@ public class Ship {
 
 	}
 	
+	public void initSkillsFromFile() {
+		File file = new File("res\\skills.txt"); 
+				  
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(file));
+			String name; 
+			int count = 0;
+			while (((name = br.readLine()) != null) && count <= 3) {
+				this.skills[count] = Skill.get(name);
+				count++;
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+			  
+
+	}
+	
+	public void saveSkillsToFile() {
+		File file = new File("res\\skills.txt"); 
+				  
+		try {
+            FileWriter writer = new FileWriter(file, false);
+            for(Skill s : this.skills) {
+            	writer.write(s.getName().toUpperCase() + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+			  
+
+	}
 	public void advanceSkills() {
 		for(int i = 0; i < skills.length; i++) {
 			if(skills[i].decreaseTick() == 0) {
@@ -277,13 +327,13 @@ public class Ship {
 			else if(name.equals("boost"))
 				increaseSpeed(1.5);
 			else if(name.equals("mine"))
-				fire(200, 200, 0, false);
+				fire(mineSize, mineSize, 0, false);
 		}
 	}
 	
 	public Missile getMega() {
 		for(Missile missile : getMissiles()) {
-			if(missile.isFollowing()) {
+			if(missile.getType().equals(type.mega)) {
 				return missile;
 			}
 		}
@@ -292,9 +342,17 @@ public class Ship {
 	
 	public void removeMega() {
 		for(Missile missile : getMissiles()) {
-			if(missile.isFollowing()) {
+			if(missile.getType().equals(type.mega)) {
 				this.removeMissile(missile);
 			}
+		}
+	}
+	
+	public void newMine(int width, int height, int x, int y) {
+		if(width < this.mineSize / 4)
+			return;
+		else {
+			fire(width, height, x, y, 0, false);
 		}
 	}
 	

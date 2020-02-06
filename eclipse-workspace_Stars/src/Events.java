@@ -44,6 +44,7 @@ public class Events{
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 		    	m.f.showMain();
+		    	m.ship.saveSkillsToFile();
 		    }
 		};
 		
