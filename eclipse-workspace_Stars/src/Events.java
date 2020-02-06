@@ -57,7 +57,7 @@ public class Events{
 		skillSelect = new MouseListener() {
 		    @Override
 		    public void mousePressed(MouseEvent e) {
-		    	String text = ((JLabel) e.getComponent()).getText();
+		    	String text = ((JLabel) e.getComponent()).getName();
 		    	m.f.ep.switchSkillSelection(text);
 		    	
 		    	m.f.repaint();
@@ -76,7 +76,7 @@ public class Events{
 		switchSkill = new MouseListener() {
 		    @Override
 		    public void mousePressed(MouseEvent e) {
-		    	String text = ((JLabel) e.getComponent()).getText();
+		    	String text = ((JLabel) e.getComponent()).getName();
 		    	m.ship.swapSkill(m.f.ep.getSelectedSkillName(), Integer.parseInt(text));
 		    	m.f.repaint();
 		    }

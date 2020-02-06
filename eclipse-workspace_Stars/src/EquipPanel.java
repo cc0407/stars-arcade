@@ -50,7 +50,7 @@ public class EquipPanel extends JPanel {
 			jl.setVisible(true);
 			jl.addMouseListener(m.events.switchSkill);
 			jl.setBounds(xx, percentY(40), equippedWidth, equippedWidth);
-			jl.setText(String.valueOf(count));
+			jl.setName(String.valueOf(count));
 			this.add(jl);
 			count++;
 			xx += percentX(15);
@@ -76,7 +76,7 @@ public class EquipPanel extends JPanel {
 				this.skills[count].setVisible(true);
 				this.skills[count].addMouseListener(m.events.skillSelect);
 				this.skills[count].setBounds(x, y, skillWidth, skillWidth);
-				this.skills[count].setText(s.getKey());
+				this.skills[count].setName(s.getKey());
 				this.add(this.skills[count]);
 			}			
 
@@ -127,7 +127,7 @@ public class EquipPanel extends JPanel {
 		
 		for(int i = 0; i < this.skills.length; i++) {
 			if(i == selectedSkill) {
-				int selectedOffset = percentY(0.5);
+				int selectedOffset = percentX(0.25);
 				JLabel jl = skills[i];
 				g.setColor(Color.RED);
 				g.fillRect(jl.getX() - selectedOffset, jl.getY() - selectedOffset, jl.getWidth() + 2 * selectedOffset, jl.getHeight() + 2 * selectedOffset);
@@ -157,12 +157,12 @@ public class EquipPanel extends JPanel {
 	}
 	
 	public String getSelectedSkillName() {
-		return skills[selectedSkill].getText();
+		return skills[selectedSkill].getName();
 	}
 	
 	public void switchSkillSelection(String selectionName) {
 		for(int i = 0; i < this.skills.length; i++) {
-			if(this.skills[i].getText() == selectionName) {
+			if(this.skills[i].getName() == selectionName) {
 				this.selectedSkill = i;
 			}
 		}
