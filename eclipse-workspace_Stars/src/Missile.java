@@ -6,7 +6,6 @@ enum type{
 	mine;
 }
 public class Missile {
-	private Sound missileSound = new Sound("res\\pew2.wav");
 	private final int MISSILE_SPEED;
 	private final boolean hasSound;
 	public Rectangle hitbox;
@@ -59,17 +58,21 @@ public class Missile {
 	}
 	
 	public void pauseSound() {
-		if(this.hasSound)
-			missileSound.pause();
+		if(this.hasSound) {
+			Sound.get("missile").pause();
+		}
 	}
 
 	public void startSound() {
-		if(this.hasSound)
-			missileSound.play();
+		if(this.hasSound) {
+			Sound.get("missile").addToLoop();
+		}
 	}
 	public void stopSound() {
-		if(this.hasSound)
-			missileSound.stop();		
+		if(this.hasSound) {
+			Sound.get("missile").stop();
+		}
+	
 	}
 
 	public boolean isFollowing() {

@@ -229,7 +229,7 @@ public class Ship {
 	
 	public void removeMissile(Missile m) {
 		int index = this.missiles.indexOf(m);
-		this.missiles.get(index).stopSound();
+//		this.missiles.get(index).stopSound();
 		this.missiles.remove(m);
 	}
 	

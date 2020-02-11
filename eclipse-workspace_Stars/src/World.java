@@ -52,7 +52,7 @@ public class World {
 	}
 	
 	public void reset(){
-		Sound.clearAll();
+		Sound.stopAll();
 		this.clearMeteors();
 		this.setScore(0);
 		this.spawnAmt = 2;

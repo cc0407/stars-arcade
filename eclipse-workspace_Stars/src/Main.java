@@ -34,6 +34,7 @@ public class Main {
 	public Main() {
 		events = new Events(this);
 		Skill.initSkills();
+		Sound.initSounds();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		f = new Frame(this, screenSize);
 		

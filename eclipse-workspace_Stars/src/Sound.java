@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -12,9 +14,11 @@ public class Sound {
 
 	private String path;
 	private Clip clip;
+//	public static Sound missile = new Sound("res\\pew2.wav");
 	private long clipTime = 0;
 	private static AudioInputStream ais;
-	public final static ArrayList<Sound> sounds = new ArrayList<>();
+//	public final static ArrayList<Sound> sounds = new ArrayList<>();
+	public static final LinkedHashMap<String, Sound> sounds = new LinkedHashMap<String, Sound>();
 	// 1 = playing, 0 = stopped, -1 = paused
 	public int playing = 0;
 	
@@ -25,12 +29,22 @@ public class Sound {
 	    	ais = AudioSystem.getAudioInputStream( url );
 			clip = AudioSystem.getClip();	
 			clip.open(ais);
-			sounds.add(this);
 		} catch (LineUnavailableException | UnsupportedAudioFileException| IOException e1) {
 			e1.printStackTrace();
 		} 
 	}
 	
+	public void addToLoop() {
+		if(this.playing != 1) {
+			this.play();
+			return;
+		}
+		clip.loop(1);
+	}
+	
+	public void removeAllLoops() {
+		clip.loop(0);
+	}
 	public void play(){
 		try {
 			if(this.playing != 1) {
@@ -64,11 +78,11 @@ public class Sound {
 				
 				clipTime = 0;
 				clip.stop();
-				sounds.remove(this);
+//				sounds.remove(this);
 				
 				//for garbage collection, clip.close() caused random freezing
-				clip = null;
-				clip.close();
+//				clip = null;
+//				clip.close();
 				
 				this.playing = 0;
 
@@ -79,7 +93,8 @@ public class Sound {
 		}
 }
 	public static void pauseAll() {
-		for(Sound s : sounds) {
+		for(Entry<String, Sound> e : sounds.entrySet()) {
+			Sound s = e.getValue();
 			if(s.playing == 1) {
 				s.pause();
 			}
@@ -87,15 +102,33 @@ public class Sound {
 	}
 	
 	public static void resumeAll() {
-		for(Sound s : sounds) {
+		for(Entry<String, Sound> e : sounds.entrySet()) {
+			Sound s = e.getValue();
 			if(s.playing == -1) {
 				s.play();
 			}
 		}
 	}
 	
-	public static void clearAll() {
-		sounds.clear();
+	public static void stopAll() {
+		for(Entry<String, Sound> e : sounds.entrySet()) {
+			Sound s = e.getValue();
+			if(s.playing == -1) {
+				s.stop();
+			}
+		}
+	}
+	
+	public static void initSounds() {
+		sounds.put("missile", new Sound("res\\Pew2.wav"));
+		sounds.put("shield", new Sound("res\\Shield.wav"));
+		sounds.put("boost", new Sound("res\\Boost.wav"));
+		sounds.put("multi", new Sound("res\\Multi.wav"));
+		sounds.put("mega", new Sound("res\\Mega.wav"));
+		sounds.put("mine", new Sound("res\\Mine.wav"));
 	}
 
+	public static Sound get(String sound) {
+		return sounds.get(sound.toLowerCase());
+	}
 }

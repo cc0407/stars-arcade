@@ -29,8 +29,6 @@ public class Skill {
 		this.path = filename;
 		this.description = description;
 		
-		s = new Sound(filename + ".wav");
-		
 		
 		try {
 			img = ImageIO.read(new File(filename + ".png"));
@@ -46,10 +44,14 @@ public class Skill {
 	}
 	
 	public void play() {
-		this.s.play();
+		try{
+		Sound.get(this.getName()).play();
+		} catch(NullPointerException e) {}
 	}
 	public void pause() {
-		this.s.pause();
+		try{
+		Sound.get(this.getName()).pause();
+		} catch(NullPointerException e) {}
 	}
 	public int getDuration() {
 		return this.duration;
@@ -137,7 +139,7 @@ public class Skill {
 			ticksLeft = duration;
 			currentCooldown = cooldown;
 			isActive = false;
-			this.s.stop();
+			Sound.get(this.getName()).stop();
 			return 0;
 		}
 		this.ticksLeft --;
