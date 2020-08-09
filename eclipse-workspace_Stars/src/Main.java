@@ -10,10 +10,7 @@ public class Main {
 	//TODO powerup textures
 	//TODO 6 Boss battles
 	//TODO add sounds
-	//TODO implement more powerups
-	//TODO refactor background particles so it doesn't use a 2D array
 	//TODO locate and fix privacy leaks
-	//TODO start menu
 	//TODO particles dont scale
 	
 	//TODO color is taking a lot of memory for some reason
