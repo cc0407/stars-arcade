@@ -14,7 +14,7 @@ public class EquipPanel extends JPanel {
 
 	Main m;
 
-	private JButton back = new JButton("back");
+	private JButton back = new JButton("BACK");
 	private JLabel[] skills;
 	private JLabel[] equipped = {new JLabel(), new JLabel(), new JLabel(), new JLabel()};
 	private JTextArea descArea = new JTextArea();
