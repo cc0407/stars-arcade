@@ -22,7 +22,7 @@ public class EquipPanel extends JPanel {
 	private int skillWidth;
 	private int equippedWidth;
 	private int skillsPerRow = 3;
-	private int selectedSlot = 0;
+//	private int selectedSlot = 0;
 	private int selectedSkill = -1;
 	private int skillLibraryWidth;
 	private int skillLibraryHeight;
@@ -140,7 +140,7 @@ public class EquipPanel extends JPanel {
 			
 		
 		//draws titles
-		g.setFont(new Font("Monospaced", Font.BOLD, percentY(5)));
+		g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(5)));
 		g.setColor(Color.WHITE);
 		fm = g.getFontMetrics();
 		

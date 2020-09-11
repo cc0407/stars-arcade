@@ -72,7 +72,7 @@ public class MenuPanel extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, m.f.WIDTH, m.f.HEIGHT);
 		
-		g.setFont(new Font("Monospaced", Font.PLAIN, percentY(8)));
+		g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, percentY(8)));
 		fm = g.getFontMetrics();
 		g.setColor(Color.WHITE);
 		g.drawString("STARS ARCADE", (this.getWidth() - fm.stringWidth("STARS ARCADE"))/2, (percentY(40) - fm.getHeight())/2);

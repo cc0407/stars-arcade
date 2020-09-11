@@ -42,7 +42,7 @@ public class Renderer extends JPanel {
 		this.setBackground(Color.BLACK);
 		this.setSize(width, height);
 		this.setVisible(true);
-		menu.setBounds(percentX(90) / 2, percentY(60), percentX(10), percentY(5));
+		menu.setBounds(percentX(90) / 2, percentY(40), percentX(10), percentY(5));
 		menu.setVisible(false);
 		menu.addActionListener(m.events.restart);
 		this.add(menu);
@@ -151,7 +151,7 @@ public class Renderer extends JPanel {
 				g.drawRect(percentX(0.25), percentY(96), (percentX(22)) , percentY(3.5));
 
 				//Score
-				g.setFont(new Font("Monospaced", Font.BOLD, percentY(2.5)));
+				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(2.5)));
 				g.setColor(Color.BLACK);
 				fontMetrics = g.getFontMetrics();
 				g.drawString(m.world.getScore() + "", percentX(30) - fontMetrics.stringWidth(m.world.getScore() + ""), percentY(98.5));
@@ -193,7 +193,7 @@ public class Renderer extends JPanel {
 				g.drawImage(m.ship.getImage(), (int) (percentX(72) + (percentX(24) * progress)),percentY(96.5),percentY(2.25),percentY(2.25),this);
 				if(progress >= 1 && progressFlash)
 				{
-					g.setFont(new Font("Monospaced", Font.BOLD, percentY(2.5)));
+					g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(2.5)));
 					g.setColor(Color.RED.darker());
 					g.drawString("!", percentX(98), percentY(98.25));
 				}
@@ -208,11 +208,11 @@ public class Renderer extends JPanel {
 				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 				
 				g.setColor(Color.WHITE);
-				g.setFont(new Font("Monospaced", Font.BOLD, percentY(7.5)));
+				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(7.5)));
 				fontMetrics = g.getFontMetrics();
 				g.drawString("You Died", (this.getWidth() - fontMetrics.stringWidth("You Died"))/2, (this.getHeight() - percentY(7.5))/2);
 				
-				g.setFont(new Font("Monospaced", Font.PLAIN, percentY(2.5)));
+				g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, percentY(2.5)));
 				fontMetrics = g.getFontMetrics();
 				g.drawString("Press 'Space' to continue", (this.getWidth() - fontMetrics.stringWidth("Press 'Space' to continue"))/2 , (this.getHeight() - percentY(2.5))/2 + 30);
 				menu.setVisible(true);
@@ -222,12 +222,12 @@ public class Renderer extends JPanel {
 			//Pause Screen
 			if(m.f.paused)
 			{
-				g.setFont(new Font("Monospaced", Font.BOLD, percentY(5)));
+				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(5)));
 				fontMetrics = g.getFontMetrics();
 				g.setColor(new Color(0,0,0,150));
 				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 				g.setColor(Color.WHITE);
-				g.drawString("PAUSED", (this.getWidth() - fontMetrics.stringWidth("PAUSED"))/2, (this.getHeight() - percentY(5))/2);
+				g.drawString("PAUSED", (this.getWidth() - fontMetrics.stringWidth("PAUSED"))/2, (this.getHeight() - percentY(5))/4);
 				menu.setVisible(true);
 			}
 		}
