@@ -42,7 +42,7 @@ public class Renderer extends JPanel {
 		this.setBackground(Color.BLACK);
 		this.setSize(width, height);
 		this.setVisible(true);
-		menu.setBounds(percentX(90) / 2, percentY(50), percentX(10), percentY(5));
+		menu.setBounds(percentX(90) / 2, percentY(55), percentX(10), percentY(5));
 		menu.setVisible(false);
 		menu.addActionListener(m.events.restart);
 		this.add(menu);
@@ -195,7 +195,7 @@ public class Renderer extends JPanel {
 				{
 					g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(2.5)));
 					g.setColor(Color.RED.darker());
-					g.drawString("!", percentX(98), percentY(98.25));
+					drawString("!", percentX(98), percentY(98.25), g);
 				}
 				
 			}
@@ -206,15 +206,14 @@ public class Renderer extends JPanel {
 			{
 				g.setColor(new Color(255,0,0,100));
 				g.fillRect(0, 0, this.getWidth(), this.getHeight());
-				
 				g.setColor(Color.WHITE);
+				
 				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(7.5)));
-				fontMetrics = g.getFontMetrics();
-				g.drawString("You Died", (this.getWidth() - fontMetrics.stringWidth("You Died"))/2, (this.getHeight() - percentY(7.5))/2);
+				drawString("You Died", null, null, g);
 				
 				g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, percentY(2.5)));
-				fontMetrics = g.getFontMetrics();
-				g.drawString("Press 'Space' to continue", (this.getWidth() - fontMetrics.stringWidth("Press 'Space' to continue"))/2 , (this.getHeight() - percentY(2.5))/2 + 30);
+				drawString("Press 'Space' to continue", null, percentY(50), g);
+				
 				menu.setVisible(true);
 			}
 			
@@ -223,11 +222,10 @@ public class Renderer extends JPanel {
 			if(m.f.paused)
 			{
 				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(5)));
-				fontMetrics = g.getFontMetrics();
 				g.setColor(new Color(0,0,0,150));
 				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 				g.setColor(Color.WHITE);
-				g.drawString("PAUSED", (this.getWidth() - fontMetrics.stringWidth("PAUSED"))/2, percentY(40));
+				drawString("PAUSED", null, percentY(45), g);
 				menu.setVisible(true);
 			}
 		}
@@ -249,5 +247,22 @@ public class Renderer extends JPanel {
 	public int percentY(double percent) {
 		double result = this.getHeight() * percent / 100.0;
 		return (int) result;
+	}
+	
+	
+	/**
+	 * @param s - the string to be drawn
+	 * @param x - the x coordinate, enter null for it to be horizontally centered
+	 * @param y - the y coordinate, enter null for it to be vertically centered
+	 * @param g - the Graphics component of the JPanel
+	 */
+	protected void drawString(String s, Integer x, Integer y, Graphics g) {
+		if(x == null) {
+			x = (this.getWidth() - g.getFontMetrics().stringWidth(s) ) / 2;
+		}
+		if(y == null) {
+			y = (this.getHeight() - g.getFontMetrics().getFont().getSize()) /  2;
+		}
+		g.drawString(s, x, y);
 	}
 }
