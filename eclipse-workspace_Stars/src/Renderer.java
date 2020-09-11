@@ -42,7 +42,7 @@ public class Renderer extends JPanel {
 		this.setBackground(Color.BLACK);
 		this.setSize(width, height);
 		this.setVisible(true);
-		menu.setBounds(percentX(90) / 2, percentY(40), percentX(10), percentY(5));
+		menu.setBounds(percentX(90) / 2, percentY(50), percentX(10), percentY(5));
 		menu.setVisible(false);
 		menu.addActionListener(m.events.restart);
 		this.add(menu);
@@ -227,7 +227,7 @@ public class Renderer extends JPanel {
 				g.setColor(new Color(0,0,0,150));
 				g.fillRect(0, 0, this.getWidth(), this.getHeight());
 				g.setColor(Color.WHITE);
-				g.drawString("PAUSED", (this.getWidth() - fontMetrics.stringWidth("PAUSED"))/2, (this.getHeight() - percentY(5))/4);
+				g.drawString("PAUSED", (this.getWidth() - fontMetrics.stringWidth("PAUSED"))/2, percentY(40));
 				menu.setVisible(true);
 			}
 		}
