@@ -21,17 +21,14 @@ public class Renderer extends JPanel {
 	private boolean showBoxes = false;
 	public boolean progressFlash = false;
 	public double progress;
-	public int shipX;
-	public int shipY;
+	private int shipX;
+	private int shipY;
 	private FontMetrics fontMetrics;
 	private BufferedImage meteorImg;
 	private BufferedImage toolbarImg;
 	private Missile mega;
 	private JButton menu = new JButton("MAIN MENU");
-	//private int[] xComp = {m.ship.hitbox.x + 100,m.ship.hitbox.x -27, m.ship.hitbox.x + 50, m.ship.hitbox.x, m.ship.hitbox.x + 50,  m.ship.hitbox.x - 27,  m.ship.hitbox.x +100,  m.ship.hitbox.x + 100},
-	//		yComp = {m.ship.hitbox.y +280,  m.ship.hitbox.y - 27,  m.ship.hitbox.y - 13,  m.ship.hitbox.y,  m.ship.hitbox.y + 13,  m.ship.hitbox.y + 27,  m.ship.hitbox.y - 220,  m.ship.hitbox.y + 280};
-	
-	
+
 	
 	public Renderer(Main m, int width, int height) {
 		this.m = m;
@@ -97,20 +94,19 @@ public class Renderer extends JPanel {
 				}
 			}
 			
-			//m.ship.skill1
+			//Shield
 			if(Skill.get("SHIELD").isActive())
 			{
 				g.setColor(new Color(0,0,255,100));
-				g.fillOval(m.ship.getX() - percentY(2), m.ship.getY() - percentY(2), m.ship.getWidth() + percentY(3.7), m.ship.getHeight() + percentY(3.7));
+				g.fillOval(m.ship.getX( -percentY(2) ), m.ship.getY( -percentY(2) ), m.ship.getWidth( percentY(3.7) ), m.ship.getHeight( percentY(3.7) ));
 			}
 			
-			//mega
+			//Mega
 			if(Skill.get("MEGA").isActive())
 			{
-				shipX = m.ship.getX();
-				shipY = m.ship.getY();
-				int[] xComp = {shipX + percentX(5.25), shipX + percentX(3.4),shipX + percentX(3.4), shipX + percentX(5.25)};
-				int[] yComp = {shipY + percentY(26.5), shipY + percentY(3.15), shipY + percentY(2.8), shipY - percentY(20)};
+
+				int[] xComp = {m.ship.getX( percentX(5.25) ), m.ship.getX( percentX(3.4) ), m.ship.getX( percentX(3.4) ), m.ship.getX( percentX(5.25) )};
+				int[] yComp = {m.ship.getY( percentY(26.5) ), m.ship.getY( percentY(3.15) ), m.ship.getY( percentY(2.8) ), m.ship.getY( percentY(20) )};
 				g.setColor(Color.RED);
 				g.fillPolygon(xComp, yComp, 4);
 				try {
@@ -148,7 +144,7 @@ public class Renderer extends JPanel {
 				g.setColor(m.ship.getHealthColour());
 				g.fillRect(percentX(0.25), percentY(96), (int) (percentX(22) * m.ship.healthAsPercent()), percentY(3.5));
 				g.setColor(Color.BLACK);		
-				g.drawRect(percentX(0.25), percentY(96), (percentX(22)) , percentY(3.5));
+				g.drawRect(percentX(0.25), percentY(96), percentX(22), percentY(3.5));
 
 				//Score
 				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, percentY(2.5)));

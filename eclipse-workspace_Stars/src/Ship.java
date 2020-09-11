@@ -202,17 +202,29 @@ public class Ship {
 	public int getX() {
 		return hitbox.x;
 	}
+	public int getX(int offset) {
+		return hitbox.x + offset;
+	}
 
 	public int getY() {
 		return hitbox.y;
+	}
+	public int getY(int offset) {
+		return hitbox.y + offset;
 	}
 	
 	public int getWidth() {
 		return hitbox.width;
 	}
+	public int getWidth(int offset) {
+		return hitbox.width + offset;
+	}
 	
 	public int getHeight() {
 		return hitbox.height;
+	}
+	public int getHeight(int offset) {
+		return hitbox.height + offset;
 	}
 	
 	public boolean intersects(Rectangle r) {
